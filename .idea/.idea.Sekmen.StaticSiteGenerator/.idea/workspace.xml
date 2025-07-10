@@ -21,6 +21,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "sekmenhuseyin"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator.git",
+    "accountId": "3818ae5e-ba72-4801-bfb6-9269686c356c"
+  }
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bc9697fd33d155285d293cdbafb62d6815c18a97c1f95c35a1ee118fc8965c87/XmlTextReaderImpl.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
@@ -28,10 +40,10 @@
     <setting file="mock://D:/Projects/Sekmen.StaticSiteGenerator/Sekmen.StaticSiteGenerator/Functions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Projects/Sekmen.StaticSiteGenerator/Sekmen.StaticSiteGenerator/Program.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -48,6 +60,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Docker.Sekmen.StaticSiteGenerator/Dockerfile.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Publish to folder.Publish Sekmen.StaticSiteGenerator to folder.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
@@ -59,11 +72,15 @@
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
-  <component name="RunManager" selected="Docker.Sekmen.StaticSiteGenerator/Dockerfile">
+  <component name="RunManager" selected=".NET Project.Sekmen.StaticSiteGenerator">
+    <configuration name="Publish Sekmen.StaticSiteGenerator to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
+      <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" target_folder="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/bin/Release/net9.0/publish" target_framework="net9.0" uuid_high="-6733051939120789927" uuid_low="-8150383356843720717" />
+      <method v="2" />
+    </configuration>
     <configuration name="Sekmen.StaticSiteGenerator" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/bin/Debug/net9.0/Sekmen.StaticSiteGenerator.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/bin/Debug/net9.0" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="ENV_FILE_PATHS" value="" />
@@ -78,27 +95,22 @@
       <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
       <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
       <option name="PROJECT_KIND" value="DotNetCore" />
-      <option name="PROJECT_TFM" value="" />
+      <option name="PROJECT_TFM" value="net9.0" />
       <method v="2">
         <option name="Build" />
       </method>
     </configuration>
-    <configuration name="Sekmen.StaticSiteGenerator/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
       <deployment type="dockerfile">
-        <settings>
-          <option name="imageTag" value="sekmen.staticsitegenerator" />
-          <option name="containerName" value="sekmen.staticsitegenerator" />
-          <option name="contextFolderPath" value="D:\Projects\Sekmen.StaticSiteGenerator" />
-          <option name="sourceFilePath" value="Sekmen.StaticSiteGenerator/Dockerfile" />
-        </settings>
+        <settings />
       </deployment>
       <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile" />
-      <method v="2" />
-    </configuration>
+    <list>
+      <item itemvalue=".NET Project.Sekmen.StaticSiteGenerator" />
+      <item itemvalue="Publish to folder.Publish Sekmen.StaticSiteGenerator to folder" />
+    </list>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -113,6 +125,7 @@
       <workItem from="1752144569150" duration="791000" />
       <workItem from="1752147921975" duration="722000" />
       <workItem from="1752150678002" duration="754000" />
+      <workItem from="1752151728581" duration="45000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial project structure for Sekmen.StaticSiteGenerator&#10;&#10;- Create .gitignore to exclude build artifacts and IDE files&#10;- Add GlobalUsings.cs for common using directives&#10;- Implement Program.cs with functionality to download and process website resources&#10;- Define project file Sekmen.StaticSiteGenerator.csproj with necessary dependencies&#10;- Initialize solution file Sekmen.StaticSiteGenerator.sln&#10;- Add Functions.cs for handling file downloads and resource extraction&#10;- Include XML configuration files for project settings">
       <option name="closed" value="true" />
