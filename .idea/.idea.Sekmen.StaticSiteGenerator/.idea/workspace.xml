@@ -8,11 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68e857ea-04f6-4fd8-bec4-fca92b10e904" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/GlobalUsings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Sekmen.StaticSiteGenerator.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Sekmen.StaticSiteGenerator/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sekmen.StaticSiteGenerator/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Functions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Functions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +27,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bc9697fd33d155285d293cdbafb62d6815c18a97c1f95c35a1ee118fc8965c87/XmlTextReaderImpl.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c439425da351c75ac7d966a1cc8324b51a9c471865af79d2f2f3fcb65e392/HttpClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Projects/Sekmen.StaticSiteGenerator/Sekmen.StaticSiteGenerator/Functions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Projects/Sekmen.StaticSiteGenerator/Sekmen.StaticSiteGenerator/Program.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -89,8 +89,21 @@
       <option name="presentableId" value="Default" />
       <updated>1751985561590</updated>
       <workItem from="1751985562881" duration="3231000" />
-      <workItem from="1752054442985" duration="4066000" />
+      <workItem from="1752054442985" duration="4218000" />
+      <workItem from="1752144314795" duration="231000" />
+      <workItem from="1752144569150" duration="791000" />
+      <workItem from="1752147921975" duration="722000" />
+      <workItem from="1752150678002" duration="577000" />
     </task>
+    <task id="LOCAL-00001" summary="Add initial project structure for Sekmen.StaticSiteGenerator&#10;&#10;- Create .gitignore to exclude build artifacts and IDE files&#10;- Add GlobalUsings.cs for common using directives&#10;- Implement Program.cs with functionality to download and process website resources&#10;- Define project file Sekmen.StaticSiteGenerator.csproj with necessary dependencies&#10;- Initialize solution file Sekmen.StaticSiteGenerator.sln&#10;- Add Functions.cs for handling file downloads and resource extraction&#10;- Include XML configuration files for project settings">
+      <option name="closed" value="true" />
+      <created>1752058988813</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1752058988813</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -100,6 +113,8 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Add initial project structure for Sekmen.StaticSiteGenerator&#10;&#10;- Create .gitignore to exclude build artifacts and IDE files&#10;- Add GlobalUsings.cs for common using directives&#10;- Implement Program.cs with functionality to download and process website resources&#10;- Define project file Sekmen.StaticSiteGenerator.csproj with necessary dependencies&#10;- Initialize solution file Sekmen.StaticSiteGenerator.sln&#10;- Add Functions.cs for handling file downloads and resource extraction&#10;- Include XML configuration files for project settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add initial project structure for Sekmen.StaticSiteGenerator&#10;&#10;- Create .gitignore to exclude build artifacts and IDE files&#10;- Add GlobalUsings.cs for common using directives&#10;- Implement Program.cs with functionality to download and process website resources&#10;- Define project file Sekmen.StaticSiteGenerator.csproj with necessary dependencies&#10;- Initialize solution file Sekmen.StaticSiteGenerator.sln&#10;- Add Functions.cs for handling file downloads and resource extraction&#10;- Include XML configuration files for project settings" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -116,32 +131,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Functions.cs</url>
-          <line>75</line>
-          <properties documentPath="D:\Projects\Sekmen.StaticSiteGenerator\Sekmen.StaticSiteGenerator\Functions.cs" containingFunctionPresentation="Method 'ExtractResourceUrls'">
-            <startOffsets>
-              <option value="3454" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3455" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Functions.cs</url>
-          <line>68</line>
-          <properties documentPath="D:\Projects\Sekmen.StaticSiteGenerator\Sekmen.StaticSiteGenerator\Functions.cs" containingFunctionPresentation="Method 'ExtractResourceUrls'">
-            <startOffsets>
-              <option value="3092" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3093" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

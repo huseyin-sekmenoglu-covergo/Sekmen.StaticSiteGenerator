@@ -1,17 +1,17 @@
 ﻿public static class Functions
 {
-    public static async Task<string> DownloadSingleFile(HttpClient httpClient, string url, string outputFolder, string fileName)
+    public static async Task<string> DownloadSingleFile(HttpClient httpClient, string url, string outputFolder, string fileName, string newDomain)
     {
         Console.WriteLine("Downloading: " + url + fileName);
         var content = await httpClient.GetStringAsync(url + fileName);
 
         var pagePath = Path.Combine(outputFolder, fileName);
-        await File.WriteAllTextAsync(pagePath, content);
+        await File.WriteAllTextAsync(pagePath, content.Replace(url, newDomain));
         Console.WriteLine("File saved to: " + pagePath);
         return content;
     }
     
-    public static async Task ProcessUrls(HttpClient httpClient, XElement xElement, string outputFolder)
+    public static async Task ProcessUrls(HttpClient httpClient, XElement xElement, string outputFolder, string url, string newDomain)
     {
         var pageUrl = xElement.Value;
         Console.WriteLine($"Processing: {pageUrl}");
@@ -27,7 +27,7 @@
             pagePath = Path.Combine(pagePath, "index.html");
         if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
             Directory.CreateDirectory(Path.GetDirectoryName(pagePath)!);
-        await File.WriteAllTextAsync(pagePath, html.Replace("\"/", "\"./").Replace("'/", "'./"));
+        await File.WriteAllTextAsync(pagePath, html.Replace("\"/", "\"" + newDomain).Replace("'/", "'" + newDomain).Replace(url, newDomain));
         Console.WriteLine($"Page saved to: {pagePath}");
 
         var resourceUrls = ExtractResourceUrls(htmlDoc, uri);
@@ -92,11 +92,29 @@
             if (!Directory.Exists(Path.GetDirectoryName(resourcePath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(resourcePath)!);
 
-            if (!File.Exists(resourcePath))
+            // Send HEAD request to get content length
+            using var headRequest = new HttpRequestMessage(HttpMethod.Head, resourceUri);
+            using var headResponse = await httpClient.SendAsync(headRequest);
+            headResponse.EnsureSuccessStatusCode();
+
+            var remoteSize = headResponse.Content.Headers.ContentLength ?? -1;
+            var shouldDownload = true;
+
+            if (File.Exists(resourcePath) && remoteSize != -1)
+            {
+                var localSize = new FileInfo(resourcePath).Length;
+                shouldDownload = localSize != remoteSize;
+            }
+
+            if (shouldDownload)
             {
                 var data = await httpClient.GetByteArrayAsync(resourceUri);
                 await File.WriteAllBytesAsync(resourcePath, data);
                 Console.WriteLine($"Downloaded resource: {resourceUrl} to {resourcePath}");
+            }
+            else
+            {
+                Console.WriteLine($"Skipped (same size): {resourceUri}");
             }
         }
         catch (Exception ex)
