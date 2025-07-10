@@ -9,8 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="68e857ea-04f6-4fd8-bec4-fca92b10e904" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Sekmen.StaticSiteGenerator/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sekmen.StaticSiteGenerator/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Functions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Functions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sekmen.StaticSiteGenerator/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +28,10 @@
     <setting file="mock://D:/Projects/Sekmen.StaticSiteGenerator/Sekmen.StaticSiteGenerator/Functions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Projects/Sekmen.StaticSiteGenerator/Sekmen.StaticSiteGenerator/Program.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -40,23 +42,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Project.Sekmen.StaticSiteGenerator.executor&quot;: &quot;Debug&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.Sekmen.StaticSiteGenerator.executor": "Run",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Docker.Sekmen.StaticSiteGenerator/Dockerfile.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunManager" selected="Docker.Sekmen.StaticSiteGenerator/Dockerfile">
     <configuration name="Sekmen.StaticSiteGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -80,6 +83,22 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="Sekmen.StaticSiteGenerator/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="imageTag" value="sekmen.staticsitegenerator" />
+          <option name="containerName" value="sekmen.staticsitegenerator" />
+          <option name="contextFolderPath" value="D:\Projects\Sekmen.StaticSiteGenerator" />
+          <option name="sourceFilePath" value="Sekmen.StaticSiteGenerator/Dockerfile" />
+        </settings>
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -93,7 +112,7 @@
       <workItem from="1752144314795" duration="231000" />
       <workItem from="1752144569150" duration="791000" />
       <workItem from="1752147921975" duration="722000" />
-      <workItem from="1752150678002" duration="577000" />
+      <workItem from="1752150678002" duration="754000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial project structure for Sekmen.StaticSiteGenerator&#10;&#10;- Create .gitignore to exclude build artifacts and IDE files&#10;- Add GlobalUsings.cs for common using directives&#10;- Implement Program.cs with functionality to download and process website resources&#10;- Define project file Sekmen.StaticSiteGenerator.csproj with necessary dependencies&#10;- Initialize solution file Sekmen.StaticSiteGenerator.sln&#10;- Add Functions.cs for handling file downloads and resource extraction&#10;- Include XML configuration files for project settings">
       <option name="closed" value="true" />
@@ -103,7 +122,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752058988813</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fixed urls">
+      <option name="closed" value="true" />
+      <created>1752151365519</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752151365519</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,7 +141,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Add initial project structure for Sekmen.StaticSiteGenerator&#10;&#10;- Create .gitignore to exclude build artifacts and IDE files&#10;- Add GlobalUsings.cs for common using directives&#10;- Implement Program.cs with functionality to download and process website resources&#10;- Define project file Sekmen.StaticSiteGenerator.csproj with necessary dependencies&#10;- Initialize solution file Sekmen.StaticSiteGenerator.sln&#10;- Add Functions.cs for handling file downloads and resource extraction&#10;- Include XML configuration files for project settings" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add initial project structure for Sekmen.StaticSiteGenerator&#10;&#10;- Create .gitignore to exclude build artifacts and IDE files&#10;- Add GlobalUsings.cs for common using directives&#10;- Implement Program.cs with functionality to download and process website resources&#10;- Define project file Sekmen.StaticSiteGenerator.csproj with necessary dependencies&#10;- Initialize solution file Sekmen.StaticSiteGenerator.sln&#10;- Add Functions.cs for handling file downloads and resource extraction&#10;- Include XML configuration files for project settings" />
+    <MESSAGE value="fixed urls" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed urls" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
