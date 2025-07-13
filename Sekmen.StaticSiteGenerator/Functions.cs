@@ -14,7 +14,7 @@
     public static async Task ProcessUrls(HttpClient httpClient, XElement xElement, string outputFolder, string url, string newDomain)
     {
         var pageUrl = xElement.Value;
-        Console.WriteLine($"Processing: {pageUrl}");
+        //Console.WriteLine($"Processing: {pageUrl}");
 
         var html = await httpClient.GetStringAsync(pageUrl);
         var htmlDoc = new HtmlDocument();
@@ -28,7 +28,7 @@
         if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
             Directory.CreateDirectory(Path.GetDirectoryName(pagePath)!);
         await File.WriteAllTextAsync(pagePath, html.Replace("\"/", "\"" + newDomain).Replace("'/", "'" + newDomain).Replace(url, newDomain));
-        Console.WriteLine($"Page saved to: {pagePath}");
+        Console.WriteLine($"Page saved: {pagePath}");
 
         var resourceUrls = ExtractResourceUrls(htmlDoc, uri);
         foreach (var resourceUrl in resourceUrls)
@@ -110,16 +110,16 @@
             {
                 var data = await httpClient.GetByteArrayAsync(resourceUri);
                 await File.WriteAllBytesAsync(resourcePath, data);
-                Console.WriteLine($"Downloaded resource: {resourceUrl} to {resourcePath}");
+                Console.WriteLine($"Downloaded: {resourceUrl} to {resourcePath}");
             }
-            else
-            {
-                Console.WriteLine($"Skipped (same size): {resourceUri}");
-            }
+            // else
+            // {
+            //     Console.WriteLine($"Skipped (same size): {resourceUri}");
+            // }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to download resource: {resourceUrl} - {ex.Message}");
+            Console.WriteLine($"ERROR: Failed: {resourceUrl} - {ex.Message}");
         }
     }
 }

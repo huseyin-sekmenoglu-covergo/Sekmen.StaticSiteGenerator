@@ -10,6 +10,11 @@ using var client = new HttpClient();
 _ = await Functions.DownloadSingleFile(client, url, outputFolder, "robots.txt", newDomain);
 _ = await Functions.DownloadSingleFile(client, url, outputFolder, "manifest.json", newDomain);
 var sitemapXml = await Functions.DownloadSingleFile(client, url, outputFolder, "sitemap.xml", newDomain);
+
+//add 404
+sitemapXml = sitemapXml.Replace("</urlset>", "<url><loc>" + newDomain + "404</loc></url></urlset>");
+
+//convert sitemap tp xml
 var sitemap = XDocument.Parse(sitemapXml);
 var ns = sitemap.Root!.GetDefaultNamespace();
 var xElements = sitemap.Descendants(ns + "loc").ToArray();
