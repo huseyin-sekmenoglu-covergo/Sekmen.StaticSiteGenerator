@@ -11,11 +11,8 @@
         return content;
     }
     
-    public static async Task ProcessUrls(HttpClient httpClient, XElement xElement, string outputFolder, string url, string newDomain)
+    public static async Task<HtmlNodeCollection> ProcessUrls(HttpClient httpClient, string pageUrl, string outputFolder, string url, string newDomain)
     {
-        var pageUrl = xElement.Value;
-        //Console.WriteLine($"Processing: {pageUrl}");
-
         var html = await httpClient.GetStringAsync(pageUrl);
         var htmlDoc = new HtmlDocument();
         htmlDoc.LoadHtml(html);
@@ -35,9 +32,12 @@
         {
             await DownloadResource(httpClient, uri, resourceUrl, outputFolder);
         }
+
+        var urls = htmlDoc.DocumentNode.SelectNodes("//a[@href]") ?? new HtmlNodeCollection(null!);
+        return urls;
     }
 
-    private static HashSet<string> ExtractResourceUrls(HtmlDocument doc, Uri baseUri)
+    public static HashSet<string> ExtractResourceUrls(HtmlDocument doc, Uri baseUri)
     {
         var resources = new HashSet<string>();
 
