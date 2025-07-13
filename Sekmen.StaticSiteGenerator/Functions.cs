@@ -1,43 +1,37 @@
 ﻿public static class Functions
 {
-    public static async Task<string> DownloadSingleFile(HttpClient httpClient, string url, string outputFolder, string fileName, string newDomain)
+    public static async Task<HtmlDocument?> ProcessUrls(HttpClient client, string pageUrl, string outputFolder, string sourceUrl, string newDomain)
     {
-        Console.WriteLine("Downloading: " + url + fileName);
-        var content = await httpClient.GetStringAsync(url + fileName);
-
-        var pagePath = Path.Combine(outputFolder, fileName);
-        await File.WriteAllTextAsync(pagePath, content.Replace(url, newDomain));
-        Console.WriteLine("File saved to: " + pagePath);
-        return content;
-    }
-    
-    public static async Task<HtmlNodeCollection> ProcessUrls(HttpClient httpClient, string pageUrl, string outputFolder, string url, string newDomain)
-    {
-        var html = await httpClient.GetStringAsync(pageUrl);
-        var htmlDoc = new HtmlDocument();
-        htmlDoc.LoadHtml(html);
-
-        // save the HTML page
-        var uri = new Uri(pageUrl);
-        var pagePath = Path.Combine(outputFolder, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
-        if (!Path.HasExtension(pagePath))
-            pagePath = Path.Combine(pagePath, "index.html");
-        if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
-            Directory.CreateDirectory(Path.GetDirectoryName(pagePath)!);
-        await File.WriteAllTextAsync(pagePath, html.Replace("\"/", "\"" + newDomain).Replace("'/", "'" + newDomain).Replace(url, newDomain));
-        Console.WriteLine($"Page saved: {pagePath}");
-
-        var resourceUrls = ExtractResourceUrls(htmlDoc, uri);
-        foreach (var resourceUrl in resourceUrls)
+        try
         {
-            await DownloadResource(httpClient, uri, resourceUrl, outputFolder);
+            var html = await client.GetStringAsync(pageUrl);
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(html);
+
+            var uri = new Uri(pageUrl);
+            var pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
+            if (!Path.HasExtension(pagePath))
+                pagePath = Path.Combine(pagePath, "index.html");
+            if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(pagePath)!);
+            await File.WriteAllTextAsync(pagePath, html.Replace("\"/", "\"" + newDomain).Replace("'/", "'" + newDomain).Replace(sourceUrl, newDomain));
+            Console.WriteLine($"Page saved: {pagePath}");
+
+            var resourceUrls = ExtractResourceUrls(htmlDoc, uri);
+            foreach (var resourceUrl in resourceUrls) 
+                await DownloadResource(client, uri, resourceUrl, outputFolder);
+
+            return htmlDoc;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error processing {pageUrl}: {ex.Message}");
         }
 
-        var urls = htmlDoc.DocumentNode.SelectNodes("//a[@href]") ?? new HtmlNodeCollection(null!);
-        return urls;
+        return null;
     }
 
-    public static HashSet<string> ExtractResourceUrls(HtmlDocument doc, Uri baseUri)
+    private static HashSet<string> ExtractResourceUrls(HtmlDocument doc, Uri baseUri)
     {
         var resources = new HashSet<string>();
 
@@ -83,18 +77,16 @@
         return resources;
     }
 
-    private static async Task DownloadResource(HttpClient httpClient, Uri uri, string resourceUrl, string outputFolder)
+    private static async Task DownloadResource(HttpClient client, Uri uri, string resourceUrl, string outputFolder)
     {
         try
         {
             var resourceUri = new Uri(uri, resourceUrl);
-            var resourcePath = Path.Combine(outputFolder, resourceUri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-            if (!Directory.Exists(Path.GetDirectoryName(resourcePath)))
-                Directory.CreateDirectory(Path.GetDirectoryName(resourcePath)!);
+            var resourcePath = Path.Combine(outputFolder, uri.Host, resourceUri.AbsolutePath.TrimStart('/'));
+            Directory.CreateDirectory(Path.GetDirectoryName(resourcePath)!);
 
-            // Send HEAD request to get content length
             using var headRequest = new HttpRequestMessage(HttpMethod.Head, resourceUri);
-            using var headResponse = await httpClient.SendAsync(headRequest);
+            using var headResponse = await client.SendAsync(headRequest);
             headResponse.EnsureSuccessStatusCode();
 
             var remoteSize = headResponse.Content.Headers.ContentLength ?? -1;
@@ -108,18 +100,14 @@
 
             if (shouldDownload)
             {
-                var data = await httpClient.GetByteArrayAsync(resourceUri);
+                var data = await client.GetByteArrayAsync(resourceUri);
                 await File.WriteAllBytesAsync(resourcePath, data);
-                Console.WriteLine($"Downloaded: {resourceUrl} to {resourcePath}");
+                Console.WriteLine($"Downloaded: {resourceUri}");
             }
-            // else
-            // {
-            //     Console.WriteLine($"Skipped (same size): {resourceUri}");
-            // }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"ERROR: Failed: {resourceUrl} - {ex.Message}");
+            Console.WriteLine($"Failed: {resourceUrl} - {ex.Message}");
         }
     }
 }

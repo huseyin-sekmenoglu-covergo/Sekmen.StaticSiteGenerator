@@ -30,75 +30,24 @@ foreach (var path in manualPaths)
 while (urls.Count > 0)
 {
     var pageUrl = urls.Dequeue();
+    // ReSharper disable once CanSimplifySetAddingWithSingleCall
     if (visited.Contains(pageUrl)) continue;
     visited.Add(pageUrl);
 
-    try
+   var htmlDoc = await Functions.ProcessUrls(client, pageUrl, outputFolder, sourceUrl, newDomain);
+    if (htmlDoc == null) continue;
+
+    // Extract internal links and enqueue them
+    foreach (var link in htmlDoc.DocumentNode.SelectNodes("//a[@href]")!)
     {
-        var html = await client.GetStringAsync(pageUrl);
-        var htmlDoc = new HtmlDocument();
-        htmlDoc.LoadHtml(html);
+        var href = link.GetAttributeValue("href", string.Empty);
+        if (string.IsNullOrWhiteSpace(href)) continue;
 
         var uri = new Uri(pageUrl);
-        var pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
-        if (!Path.HasExtension(pagePath))
-            pagePath = Path.Combine(pagePath, "index.html");
-        if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
-            Directory.CreateDirectory(Path.GetDirectoryName(pagePath)!);
-        File.WriteAllText(pagePath, html.Replace("\"/", "\"" + newDomain).Replace("'/", "'" + newDomain).Replace(sourceUrl, newDomain));
-        Console.WriteLine($"Page saved: {pagePath}");
-
-        var resourceUrls = Functions.ExtractResourceUrls(htmlDoc, uri);
-        foreach (var resourceUrl in resourceUrls)
-        {
-            try
-            {
-                var resourceUri = new Uri(uri, resourceUrl);
-                var resourcePath = Path.Combine(outputFolder, uri.Host, resourceUri.AbsolutePath.TrimStart('/'));
-                Directory.CreateDirectory(Path.GetDirectoryName(resourcePath)!);
-
-                using var headRequest = new HttpRequestMessage(HttpMethod.Head, resourceUri);
-                using var headResponse = await client.SendAsync(headRequest);
-                headResponse.EnsureSuccessStatusCode();
-
-                var remoteSize = headResponse.Content.Headers.ContentLength ?? -1;
-                var shouldDownload = true;
-
-                if (File.Exists(resourcePath) && remoteSize != -1)
-                {
-                    var localSize = new FileInfo(resourcePath).Length;
-                    shouldDownload = localSize != remoteSize;
-                }
-
-                if (shouldDownload)
-                {
-                    var data = await client.GetByteArrayAsync(resourceUri);
-                    File.WriteAllBytes(resourcePath, data);
-                    Console.WriteLine($"Downloaded: {resourceUri}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed: {resourceUrl} - {ex.Message}");
-            }
-        }
-
-        // Extract internal links and enqueue them
-        foreach (var link in htmlDoc.DocumentNode.SelectNodes("//a[@href]")!)
-        {
-            var href = link.GetAttributeValue("href", string.Empty);
-            if (string.IsNullOrWhiteSpace(href)) continue;
-
-            var newUri = new Uri(uri, href);
-            if (newUri.Host == uri.Host && !visited.Contains(newUri.ToString()))
-            {
-                urls.Enqueue(newUri.ToString());
-            }
-        }
+        var newUri = new Uri(uri, href);
+        if (newUri.Host == uri.Host && !visited.Contains(newUri.ToString())) 
+            urls.Enqueue(newUri.ToString());
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error processing {pageUrl}: {ex.Message}");
-    }
+
 }
 Console.WriteLine("Done.");
