@@ -9,8 +9,8 @@
             htmlDoc.LoadHtml(html);
 
             var uri = new Uri(pageUrl);
-            var pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
-            if (!Path.HasExtension(pagePath))
+            var pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+            if (!Path.HasExtension(uri.AbsolutePath))
                 pagePath = Path.Combine(pagePath, "index.html");
             if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(pagePath)!);
