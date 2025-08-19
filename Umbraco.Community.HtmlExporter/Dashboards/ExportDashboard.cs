@@ -1,4 +1,7 @@
-﻿namespace Umbraco.Community.HtmlExporter.Dashboards;
+﻿using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.Models;
+
+namespace Umbraco.Community.HtmlExporter.Dashboards;
 
 public class ExportDashboard : SimpleDashboard
 {
@@ -13,11 +16,11 @@ public class ExportDashboardViewComponent(
 {
     public override async Task<IViewComponentResult> InvokeAsync(DashboardViewModel model)
     {
-        var domains = await domainService.GetAllAsync(true);
+        IEnumerable<IDomain> domains = await domainService.GetAllAsync(true);
         
-        var umbracoContextReference = umbracoContextFactory.EnsureUmbracoContext();
-        documentNavigationQueryService.TryGetRootKeys(out var rootKeys);
-        var viewModel = rootKeys
+        UmbracoContextReference umbracoContextReference = umbracoContextFactory.EnsureUmbracoContext();
+        documentNavigationQueryService.TryGetRootKeys(out IEnumerable<Guid> rootKeys);
+        ExportDashboardViewModel[] viewModel = rootKeys
             .Select(key => umbracoContextReference.UmbracoContext.Content.GetById(key))
             .WhereNotNull()
             .Select(m => new ExportDashboardViewModel(m.Id, m.Name, domains.First(n => n.RootContentId == m.Id).DomainName))

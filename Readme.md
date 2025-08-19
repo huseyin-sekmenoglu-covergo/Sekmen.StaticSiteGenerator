@@ -1,6 +1,6 @@
 # Sitemap Website Exporter (.NET)
 
-A simple .NET console application that reads a `sitemap.xml`, downloads all listed pages, and saves each page's HTML along with its CSS, JavaScript, image, and inline background image resources to a local folder — preserving the original structure.
+A simple application that reads `sitemap.xml`, downloads all listed pages, and saves each page's HTML along with its CSS, JavaScript, image, and inline background image resources to a local folder — preserving the original structure.
 
 ---
 
@@ -46,6 +46,13 @@ dotnet build
 
 ```bash
 dotnet run
+```
+
+### 4. Test project credentials
+
+```bash
+admin@test.com
+123qwe123qwe
 ```
 
 By default, it will:

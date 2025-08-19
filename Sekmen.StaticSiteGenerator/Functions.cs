@@ -6,12 +6,12 @@ public static class ExportFunctions
     {
         try
         {
-            var html = await client.GetStringAsync(pageUrl);
-            var htmlDoc = new HtmlDocument();
+            string html = await client.GetStringAsync(pageUrl);
+            HtmlDocument htmlDoc = new();
             htmlDoc.LoadHtml(html);
 
-            var uri = new Uri(pageUrl);
-            var pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar).Replace("umbraco-cms", "umbraco"));
+            Uri uri = new Uri(pageUrl);
+            string pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar).Replace("umbraco-cms", "umbraco"));
             if (!Path.HasExtension(uri.AbsolutePath))
                 pagePath = Path.Combine(pagePath, "index.html");
             if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
@@ -22,8 +22,8 @@ public static class ExportFunctions
             if (pagePath.Contains(".pdf"))
                 return null;
 
-            var resourceUrls = ExtractResourceUrls(htmlDoc, uri);
-            foreach (var resourceUrl in resourceUrls) 
+            HashSet<string> resourceUrls = ExtractResourceUrls(htmlDoc, uri);
+            foreach (string resourceUrl in resourceUrls) 
                 await DownloadResource(client, uri, resourceUrl, outputFolder);
 
             return htmlDoc;
@@ -38,42 +38,42 @@ public static class ExportFunctions
 
     private static HashSet<string> ExtractResourceUrls(HtmlDocument doc, Uri baseUri)
     {
-        var resources = new HashSet<string>();
+        HashSet<string> resources = [];
 
-        foreach (var link in doc.DocumentNode.SelectNodes("//link") ?? new HtmlNodeCollection(null!))
+        foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//link") ?? new HtmlNodeCollection(null!))
         {
-            var href = link.GetAttributeValue("href", string.Empty);
+            string href = link.GetAttributeValue("href", string.Empty);
             if (!string.IsNullOrWhiteSpace(href) && (href.StartsWith('/') || href.StartsWith(baseUri.AbsoluteUri)) &&
                 !href.Equals(baseUri.AbsoluteUri))
                 resources.Add(href);
         }
 
-        foreach (var script in doc.DocumentNode.SelectNodes("//script[@src]") ?? new HtmlNodeCollection(null!))
+        foreach (HtmlNode script in doc.DocumentNode.SelectNodes("//script[@src]") ?? new HtmlNodeCollection(null!))
         {
-            var src = script.GetAttributeValue("src", string.Empty);
+            string src = script.GetAttributeValue("src", string.Empty);
             if (!string.IsNullOrWhiteSpace(src) && (src.StartsWith('/') || src.StartsWith(baseUri.AbsoluteUri)))
                 resources.Add(src);
         }
 
-        foreach (var img in doc.DocumentNode.SelectNodes("//img[@src]") ?? new HtmlNodeCollection(null!))
+        foreach (HtmlNode img in doc.DocumentNode.SelectNodes("//img[@src]") ?? new HtmlNodeCollection(null!))
         {
-            var src = img.GetAttributeValue("src", string.Empty);
+            string src = img.GetAttributeValue("src", string.Empty);
             if (!string.IsNullOrWhiteSpace(src) && (src.StartsWith('/') || src.StartsWith(baseUri.AbsoluteUri)))
                 resources.Add(src);
         }
 
 
         // style="background-image: url(...)" inline styles
-        foreach (var node in doc.DocumentNode.SelectNodes("//*[@style]") ?? new HtmlNodeCollection(null!))
+        foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//*[@style]") ?? new HtmlNodeCollection(null!))
         {
-            var style = node.GetAttributeValue("style", string.Empty);
+            string style = node.GetAttributeValue("style", string.Empty);
             if (string.IsNullOrEmpty(style)) 
                 continue;
             // Extract all urls from the style content using regex
-            var matches = Regex.Matches(style, @"url\(['""]?(?<url>[^'""\)]+)['""]?\)");
+            MatchCollection matches = Regex.Matches(style, @"url\(['""]?(?<url>[^'""\)]+)['""]?\)");
             foreach (Match match in matches)
             {
-                var url = match.Groups["url"].Value;
+                string url = match.Groups["url"].Value;
                 if (!string.IsNullOrWhiteSpace(url))
                     resources.Add(url);
             }
@@ -86,26 +86,26 @@ public static class ExportFunctions
     {
         try
         {
-            var resourceUri = new Uri(uri, resourceUrl);
-            var resourcePath = Path.Combine(outputFolder, uri.Host, resourceUri.AbsolutePath.TrimStart('/'));
+            Uri resourceUri = new Uri(uri, resourceUrl);
+            string resourcePath = Path.Combine(outputFolder, uri.Host, resourceUri.AbsolutePath.TrimStart('/'));
             Directory.CreateDirectory(Path.GetDirectoryName(resourcePath)!);
 
-            using var headRequest = new HttpRequestMessage(HttpMethod.Head, resourceUri);
-            using var headResponse = await client.SendAsync(headRequest);
+            using HttpRequestMessage headRequest = new(HttpMethod.Head, resourceUri);
+            using HttpResponseMessage headResponse = await client.SendAsync(headRequest);
             headResponse.EnsureSuccessStatusCode();
 
-            var remoteSize = headResponse.Content.Headers.ContentLength ?? -1;
-            var shouldDownload = true;
+            long remoteSize = headResponse.Content.Headers.ContentLength ?? -1;
+            bool shouldDownload = true;
 
             if (File.Exists(resourcePath) && remoteSize != -1)
             {
-                var localSize = new FileInfo(resourcePath).Length;
+                long localSize = new FileInfo(resourcePath).Length;
                 shouldDownload = localSize != remoteSize;
             }
 
             if (shouldDownload)
             {
-                var data = await client.GetByteArrayAsync(resourceUri);
+                byte[] data = await client.GetByteArrayAsync(resourceUri);
                 await File.WriteAllBytesAsync(resourcePath, data);
                 Console.WriteLine($"Downloaded: {resourceUri}");
             }
