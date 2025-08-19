@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+      <PackageReference Include="Umbraco.Community.SimpleDashboards" Version="16.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Sekmen.StaticSiteGenerator\Sekmen.StaticSiteGenerator.csproj" />
     </ItemGroup>
 
 </Project>

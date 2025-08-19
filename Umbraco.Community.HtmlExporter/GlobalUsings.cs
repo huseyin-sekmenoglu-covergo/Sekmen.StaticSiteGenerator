@@ -1,0 +1,13 @@
+﻿// Global using directives
+
+global using System.Xml.Linq;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using Umbraco.Cms.Api.Management.Controllers;
+global using Umbraco.Cms.Api.Management.Routing;
+global using Umbraco.Cms.Core.Services;
+global using Umbraco.Cms.Core.Services.Navigation;
+global using Umbraco.Cms.Core.Web;
+global using Umbraco.Community.SimpleDashboards.Web;
+global using Umbraco.Community.SimpleDashboards.Web.Models;
+global using Umbraco.Extensions;

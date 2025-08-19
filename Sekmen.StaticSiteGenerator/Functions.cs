@@ -1,4 +1,6 @@
-﻿public static class Functions
+﻿namespace Sekmen.StaticSiteGenerator;
+
+public static class ExportFunctions
 {
     public static async Task<HtmlDocument?> ProcessUrls(HttpClient client, string pageUrl, string outputFolder, string sourceUrl, string newDomain)
     {
@@ -9,13 +11,16 @@
             htmlDoc.LoadHtml(html);
 
             var uri = new Uri(pageUrl);
-            var pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+            var pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar).Replace("umbraco-cms", "umbraco"));
             if (!Path.HasExtension(uri.AbsolutePath))
                 pagePath = Path.Combine(pagePath, "index.html");
             if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(pagePath)!);
-            await File.WriteAllTextAsync(pagePath, html.Replace("\"/", "\"" + newDomain).Replace("'/", "'" + newDomain).Replace(sourceUrl, newDomain));
+            await File.WriteAllTextAsync(pagePath, html.Replace("\"/", "\"" + newDomain).Replace("'/", "'" + newDomain).Replace(sourceUrl, newDomain).Replace("umbraco-cms", "umbraco").Replace("Umbraco CMS", "Umbraco"));
             Console.WriteLine($"Page saved: {pagePath}");
+
+            if (pagePath.Contains(".pdf"))
+                return null;
 
             var resourceUrls = ExtractResourceUrls(htmlDoc, uri);
             foreach (var resourceUrl in resourceUrls) 
