@@ -23,7 +23,7 @@ public class ExportDashboardViewComponent(
         ExportDashboardViewModel[] viewModel = rootKeys
             .Select(key => umbracoContextReference.UmbracoContext.Content.GetById(key))
             .WhereNotNull()
-            .Select(m => new ExportDashboardViewModel(m.Id, m.Name, domains.First(n => n.RootContentId == m.Id).DomainName))
+            .Select(m => new ExportDashboardViewModel(m.Id, m.Name, domains.FirstOrDefault(n => n.RootContentId == m.Id)?.DomainName ?? "Domain not found"))
             .ToArray();
         return View("~/Views/Dashboards/ExportDashboard.cshtml", viewModel);
     }
