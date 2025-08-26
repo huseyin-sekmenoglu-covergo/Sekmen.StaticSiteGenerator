@@ -1,33 +1,50 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.1.0</Version>
+        <Version>0.2.0</Version>
         <Title>Umbraco.Community.HtmlExporter</Title>
         <Authors>Hüseyin Sekmenoğlu</Authors>
         <PackageProjectUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</PackageProjectUrl>
-        <PackageIcon>logo.png</PackageIcon>
         <RepositoryUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</RepositoryUrl>
-        <AssemblyVersion>0.1.0</AssemblyVersion>
-        <FileVersion>0.1.0</FileVersion>
+        <AssemblyVersion>0.2.0</AssemblyVersion>
+        <FileVersion>0.2.0</FileVersion>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Umbraco.Community.SimpleDashboards" Version="16.0.1" />
+      <PackageReference Include="Sekmen.StaticSiteGenerator" />
+      <PackageReference Include="Umbraco.Community.SimpleDashboards" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\logo.png">
+            <Pack>True</Pack>
+            <PackagePath />
+            <Link>logo.png</Link>
+        </None>
+        <None Include="..\readme.md">
+            <Pack>True</Pack>
+            <PackagePath />
+            <Link>readme.md</Link>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Views\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Sekmen.StaticSiteGenerator\Sekmen.StaticSiteGenerator.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="logo.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </None>
     </ItemGroup>
 
 </Project>

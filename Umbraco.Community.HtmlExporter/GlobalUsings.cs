@@ -1,6 +1,4 @@
-﻿// Global using directives
-
-global using System.Xml.Linq;
+﻿global using System.Xml.Linq;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Umbraco.Cms.Api.Management.Controllers;
