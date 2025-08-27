@@ -1,8 +1,12 @@
 ﻿global using System.Xml.Linq;
+global using HtmlAgilityPack;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
+global using Sekmen.StaticSiteGenerator;
 global using Umbraco.Cms.Api.Management.Controllers;
 global using Umbraco.Cms.Api.Management.Routing;
+global using Umbraco.Cms.Core;
+global using Umbraco.Cms.Core.Models;
 global using Umbraco.Cms.Core.Services;
 global using Umbraco.Cms.Core.Services.Navigation;
 global using Umbraco.Cms.Core.Web;

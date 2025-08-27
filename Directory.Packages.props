@@ -5,9 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="HtmlAgilityPack" Version="[1.12.0,)" />
-    <PackageVersion Include="Umbraco.Community.HtmlExporter" Version="0.3.0" />
+    <PackageVersion Include="Umbraco.Community.HtmlExporter" Version="0.3.4" />
     <PackageVersion Include="Umbraco.Community.SimpleDashboards" Version="[16.0.0,)" />
-    <PackageVersion Include="Clean" Version="[6.0.0,)" />
+    <PackageVersion Include="Clean" Version="6.0.1" />
     <PackageVersion Include="Umbraco.Cms" Version="16.1.1" />
     <PackageVersion Include="Microsoft.ICU.ICU4C.Runtime" Value="72.1.0.3" />
   </ItemGroup>

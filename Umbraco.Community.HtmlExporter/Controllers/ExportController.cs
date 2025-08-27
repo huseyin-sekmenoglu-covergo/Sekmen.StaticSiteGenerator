@@ -1,7 +1,4 @@
-﻿using HtmlAgilityPack;
-using Sekmen.StaticSiteGenerator;
-
-namespace Umbraco.Community.HtmlExporter.Controllers;
+﻿namespace Umbraco.Community.HtmlExporter.Controllers;
 
 [VersionedApiBackOfficeRoute("export")]
 [AllowAnonymous]

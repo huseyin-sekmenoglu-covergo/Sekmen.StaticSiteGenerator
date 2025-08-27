@@ -1,7 +1,4 @@
-﻿using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Models;
-
-namespace Umbraco.Community.HtmlExporter.Dashboards;
+﻿namespace Umbraco.Community.HtmlExporter.Dashboards;
 
 public class ExportDashboard : SimpleDashboard
 {
