@@ -22,7 +22,7 @@ public class ExportDashboardViewComponent(
             .WhereNotNull()
             .Select(m => new ExportDashboardViewModel(m.Id, m.Name, domains.FirstOrDefault(n => n.RootContentId == m.Id)?.DomainName ?? "Domain not found"))
             .ToArray();
-        return View("ExportDashboard.cshtml", viewModel);
+        return View("~/Views/Dashboards/ExportDashboard.cshtml", viewModel);
     }
 }
 

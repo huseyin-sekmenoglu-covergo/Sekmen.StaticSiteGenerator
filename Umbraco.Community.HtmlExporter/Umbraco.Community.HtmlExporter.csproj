@@ -6,13 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.3.6</Version>
+        <Version>0.3.7</Version>
         <Title>Umbraco.Community.HtmlExporter</Title>
         <Authors>Hüseyin Sekmenoğlu</Authors>
         <PackageProjectUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</RepositoryUrl>
-        <AssemblyVersion>0.3.6</AssemblyVersion>
-        <FileVersion>0.3.6</FileVersion>
+        <AssemblyVersion>0.3.7</AssemblyVersion>
+        <FileVersion>0.3.7</FileVersion>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
@@ -36,14 +36,11 @@
             <PackagePath />
             <Link>readme.md</Link>
         </None>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Include="Components\**\*.cshtml" />
-        <EmbeddedResource Include="Views\**\*.cshtml" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="Views\**\*.cshtml" Pack="true" PackagePath="contentFiles\any\net7.0\Views" CopyToOutput="true" />
-        <Content Include="Components\**\*.cshtml" Pack="true" PackagePath="contentFiles\any\net7.0\Components" CopyToOutput="true" />
+        <Content Include="Views\**\*.cshtml">
+            <Pack>true</Pack>
+            <PackagePath>contentFiles\any\net9.0\Views</PackagePath>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
