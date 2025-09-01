@@ -1,0 +1,19 @@
+﻿@* @inject Umbraco.Cms.Core.Services.IDomainService DomainService *@
+@* @inject Umbraco.Cms.Core.Web.IUmbracoContextFactory UmbracoContextFactory *@
+@* @inject Umbraco.Cms.Core.Services.Navigation.IDocumentNavigationQueryService DocumentNavigationQueryService *@
+@{
+    // IEnumerable<IDomain> domains = await DomainService.GetAllAsync(true);
+    //     
+    // UmbracoContextReference umbracoContextReference = UmbracoContextFactory.EnsureUmbracoContext();
+    // DocumentNavigationQueryService.TryGetRootKeys(out IEnumerable<Guid> rootKeys);
+    // ExportDashboardViewModel[] viewModel = rootKeys
+    //     .Select(key => umbracoContextReference.UmbracoContext.Content.GetById(key))
+    //     .WhereNotNull()
+    //     .Select(m => new ExportDashboardViewModel(m.Id, m.Name, domains.FirstOrDefault(n => n.RootContentId == m.Id)?.DomainName ?? "Domain not found"))
+    //     .ToArray();
+}
+<uui-box headline="Hello Umbraco">
+    <p>Export Website</p>
+</uui-box>
+
+@await Html.PartialAsync("ExportForm")

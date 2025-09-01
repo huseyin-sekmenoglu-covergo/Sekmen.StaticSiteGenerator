@@ -10,6 +10,7 @@ global using Umbraco.Cms.Core.Models;
 global using Umbraco.Cms.Core.Services;
 global using Umbraco.Cms.Core.Services.Navigation;
 global using Umbraco.Cms.Core.Web;
+global using Umbraco.Community.HtmlExporter.Models;
 global using Umbraco.Community.SimpleDashboards.Web;
 global using Umbraco.Community.SimpleDashboards.Web.Models;
 global using Umbraco.Extensions;

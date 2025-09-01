@@ -1,0 +1,18 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <HtmlExporterViewsFilePath>$(MSBuildThisFileDirectory)..\Views\**\*.*</HtmlExporterViewsFilePath>
+    </PropertyGroup>
+
+    <Target Name="CopyHtmlExporterViews" BeforeTargets="Build">
+        <ItemGroup>
+            <HtmlExporterViewsFiles Include="$(HtmlExporterViewsFilePath)" />
+        </ItemGroup>
+        <Message Text="Copying HtmlExporter Views files: $(HtmlExporterViewsFilesPath) - #@(HtmlExporterViewsFiles->Count()) files"  Importance="high" />
+        <Copy
+                SourceFiles="@(HtmlExporterViewsFiles)"
+                DestinationFiles="@(HtmlExporterViewsFiles->'$(MSBuildProjectDirectory)\Views\%(RecursiveDir)%(Filename)%(Extension)')"
+                SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>
