@@ -1,8 +1,51 @@
 ﻿namespace Sekmen.StaticSiteGenerator;
 
-public static class ExportFunctions
+public static class Functions
 {
-    public static async Task<HtmlDocument?> ProcessUrls(HttpClient client, string pageUrl, string outputFolder, string sourceUrl, string newDomain)
+    public static async Task ExportWebsite(HttpClient client, ExportCommand request)
+    {
+        string sourceUrl = $"https://{request.SiteUrl}/";
+        Directory.CreateDirectory(request.OutputFolder);
+        string sitemapXml = await client.GetStringAsync(sourceUrl + "sitemap.xml");
+        XDocument sitemap = XDocument.Parse(sitemapXml);
+        XNamespace ns = sitemap.Root!.GetDefaultNamespace();
+
+        HashSet<string> visited = [];
+        Queue<string> urls = new();
+
+        // Load sitemap URLs
+        urls.Enqueue("sitemap.xml");
+        foreach (XElement loc in sitemap.Descendants(ns + "loc")) 
+            urls.Enqueue(loc.Value);
+
+        // Add additional manual URLs
+        foreach (string path in request.AdditionalUrls) 
+            urls.Enqueue(new Uri(new Uri(sourceUrl), path).ToString());
+
+        while (urls.Count > 0)
+        {
+            string pageUrl = urls.Dequeue();
+            if (!visited.Add(pageUrl)) continue;
+            Console.WriteLine($"Processing: {pageUrl}");
+
+            // Extract internal links and enqueue them
+            HtmlDocument? htmlDoc = await ProcessUrls(client, pageUrl, request.OutputFolder, sourceUrl, request.TargetUrl);
+            HtmlNodeCollection? links = htmlDoc?.DocumentNode.SelectNodes("//a[@href]");
+            if (links == null) continue;
+            foreach (HtmlNode link in links)
+            {
+                string href = link.GetAttributeValue("href", string.Empty);
+                if (string.IsNullOrWhiteSpace(href)) continue;
+
+                Uri uri = new(pageUrl);
+                Uri newUri = new(uri, href);
+                if (newUri.Host == uri.Host && !visited.Contains(newUri.ToString()))
+                    urls.Enqueue(newUri.ToString());
+            }
+        }
+    }
+
+    private static async Task<HtmlDocument?> ProcessUrls(HttpClient client, string pageUrl, string outputFolder, string sourceUrl, string newDomain)
     {
         try
         {

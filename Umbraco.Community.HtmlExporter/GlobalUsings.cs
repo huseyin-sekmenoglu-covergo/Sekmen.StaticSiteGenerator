@@ -1,8 +1,4 @@
-﻿// Global using directives
-
-global using System.Xml.Linq;
-global using Asp.Versioning;
-global using HtmlAgilityPack;
+﻿global using Asp.Versioning;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
@@ -16,10 +12,14 @@ global using Swashbuckle.AspNetCore.SwaggerGen;
 global using Umbraco.Cms.Api.Common.Attributes;
 global using Umbraco.Cms.Api.Common.OpenApi;
 global using Umbraco.Cms.Api.Management.OpenApi;
+global using Umbraco.Cms.Core;
 global using Umbraco.Cms.Core.Composing;
 global using Umbraco.Cms.Core.DependencyInjection;
-global using Umbraco.Cms.Core.Models.Membership;
-global using Umbraco.Cms.Core.Security;
+global using Umbraco.Cms.Core.Models;
+global using Umbraco.Cms.Core.Services;
+global using Umbraco.Cms.Core.Services.Navigation;
+global using Umbraco.Cms.Core.Web;
 global using Umbraco.Cms.Web.Common.Authorization;
 global using Umbraco.Cms.Web.Common.Routing;
 global using Umbraco.Community.HtmlExporter.Models;
+global using Umbraco.Extensions;
