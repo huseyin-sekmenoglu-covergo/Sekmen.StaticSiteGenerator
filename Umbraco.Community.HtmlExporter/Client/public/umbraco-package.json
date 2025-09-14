@@ -1,0 +1,14 @@
+{
+  "id": "Umbraco.Community.HtmlExporter",
+  "name": "Umbraco.Community.HtmlExporter",
+  "version": "0.0.0",
+  "allowTelemetry": true,
+  "extensions": [
+    {
+      "name": "Umbraco Community Html Exporter Bundle",
+      "alias": "Umbraco.Community.HtmlExporter.Bundle",
+      "type": "bundle",
+      "js": "/App_Plugins/UmbracoCommunityHtmlExporter/umbraco-community-html-exporter.js"
+    }
+  ]
+}

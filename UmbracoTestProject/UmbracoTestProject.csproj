@@ -11,6 +11,10 @@
         <PackageReference Include="Umbraco.Cms" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Umbraco.Community.HtmlExporter\Umbraco.Community.HtmlExporter.csproj" />
+    </ItemGroup>
+
     <PropertyGroup>
         <!-- Razor files are needed for the backoffice to work correctly -->
         <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
