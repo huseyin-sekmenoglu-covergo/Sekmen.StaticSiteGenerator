@@ -22,6 +22,7 @@
         <PackageReference Include="Umbraco.Cms.Web.Common" />
         <PackageReference Include="Umbraco.Cms.Api.Common" />
         <PackageReference Include="Umbraco.Cms.Api.Management" />
+        <PackageReference Include="HtmlAgilityPack" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,6 +37,10 @@
 
     <ItemGroup>
         <Folder Include="wwwroot\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Sekmen.StaticSiteGenerator\Sekmen.StaticSiteGenerator.csproj" />
     </ItemGroup>
 
     <!-- Restore and build Client files -->

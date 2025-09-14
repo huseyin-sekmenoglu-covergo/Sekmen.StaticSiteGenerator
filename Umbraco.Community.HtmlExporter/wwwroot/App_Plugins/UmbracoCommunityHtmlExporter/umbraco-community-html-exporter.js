@@ -3,17 +3,17 @@ const t = [
     name: "Umbraco Community Html Exporter Entrypoint",
     alias: "Umbraco.Community.HtmlExporter.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-DvrHMrub.js")
+    js: () => import("./entrypoint-ZrgjOO4U.js")
   }
-], a = [
+], o = [
   {
     name: "Umbraco Community Html Exporter Dashboard",
     alias: "Umbraco.Community.HtmlExporter.Dashboard",
     type: "dashboard",
-    js: () => import("./dashboard.element-DjxGafqx.js"),
+    js: () => import("./dashboard.element-BWqM50p4.js"),
     meta: {
-      label: "Example Dashboard",
-      pathname: "example-dashboard"
+      label: "HTML Exporter",
+      pathname: "html-exporter-dashboard"
     },
     conditions: [
       {
@@ -22,11 +22,11 @@ const t = [
       }
     ]
   }
-], o = [
+], a = [
   ...t,
-  ...a
+  ...o
 ];
 export {
-  o as manifests
+  a as manifests
 };
 //# sourceMappingURL=umbraco-community-html-exporter.js.map

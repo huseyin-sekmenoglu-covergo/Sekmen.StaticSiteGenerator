@@ -1,26 +1,15 @@
-import {
-  LitElement,
-  css,
-  html,
-  customElement,
-  state,
-} from "@umbraco-cms/backoffice/external/lit";
+import { LitElement, css, html, customElement, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT } from "@umbraco-cms/backoffice/notification";
 import { UMB_CURRENT_USER_CONTEXT, UmbCurrentUserModel } from "@umbraco-cms/backoffice/current-user";
-import { UmbracoCommunityHtmlExporterService, UserModel } from "../api/index.js";
+import { UmbracoCommunityHtmlExporter } from "../api/index.js";
 
-@customElement("example-dashboard")
-export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
+@customElement("html-exporter-dashboard")
+export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
+ 
   @state()
-  private _yourName?: string = "Press the button!";
-
-  @state()
-  private _timeFromMrWolf?: Date;
-
-  @state()
-  private _serverUserData?: UserModel;
+  private _serverUserData?: string;
 
   @state()
   private _contextCurrentUser?: UmbCurrentUserModel;
@@ -48,11 +37,17 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     });
   }
 
-  #onClickWhoAmI = async (ev: Event) => {
+  #exportHtml = async (ev: Event) => {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    const { data, error } = await UmbracoCommunityHtmlExporterService.whoAmI();
+    const { data, error } = await UmbracoCommunityHtmlExporter.exportWebsite({
+      body: {
+        SiteUrl: "https://huseyinsekmenoglu.net/",
+        TargetUrl: "https://huseyinsekmenoglu.net/",
+        OutputFolder: "C:\\Temp\\HtmlExport"
+      } 
+    });
 
     if (error) {
       buttonElement.state = "failed";
@@ -61,75 +56,62 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     }
 
     if (data !== undefined) {
-      this._serverUserData = data as UserModel;
       buttonElement.state = "success";
     }
 
     if (this.#notificationContext) {
       this.#notificationContext.peek("warning", {
         data: {
-          headline: `You are ${this._serverUserData?.name}`,
-          message: `Your email is ${this._serverUserData?.email}`,
+          headline: `You are ${this._serverUserData}`,
+          message: `Your email is ${this._serverUserData}`,
         },
       });
     }
   };
-
-  #onClickWhatsTheTimeMrWolf = async (ev: Event) => {
-    const buttonElement = ev.target as UUIButtonElement;
-    buttonElement.state = "waiting";
-
-    // Getting a string - should I expect a datetime?!
-    const { data, error } = await UmbracoCommunityHtmlExporterService.whatsTheTimeMrWolf();
-
-    if (error) {
-      buttonElement.state = "failed";
-      console.error(error);
-      return;
-    }
-
-    if (data !== undefined) {
-      this._timeFromMrWolf = new Date(data);
-      buttonElement.state = "success";
-    }
-  };
-
-  #onClickWhatsMyName = async (ev: Event) => {
-    const buttonElement = ev.target as UUIButtonElement;
-    buttonElement.state = "waiting";
-
-    const { data, error } = await UmbracoCommunityHtmlExporterService.whatsMyName();
-
-    if (error) {
-      buttonElement.state = "failed";
-      console.error(error);
-      return;
-    }
-
-    this._yourName = data;
-    buttonElement.state = "success";
-  };
+  // ${this._serverUserData?.groups.map(
+  //   (group) => html`<li>${group.name}</li>`
+  // )}
 
   render() {
     return html`
-      <uui-box headline="Who am I?">
+      <uui-box headline="Export HTML" class="wide">
         <div slot="header">[Server]</div>
         <h2>
-          <uui-icon name="icon-user"></uui-icon>${this._serverUserData?.email
-            ? this._serverUserData.email
+          <uui-icon name="icon-user"></uui-icon>${this._serverUserData
+            ? this._serverUserData
             : "Press the button!"}
         </h2>
-        <ul>
-          ${this._serverUserData?.groups.map(
-            (group) => html`<li>${group.name}</li>`
-          )}
-        </ul>
+        <div class="form-group mb-3">
+          <label for="siteUrl" class="form-label">Select source site</label> 
+          <ul>
+            <li>
+            <input type="radio" id="site1" name="site" value="site1" checked>
+              <label for="site1">https://huseyinsekmenoglu.net/</label>
+            </li>
+            <li>
+              <input type="radio" id="site2" name="site" value="site2">
+              <label for="site2">https://example.com/</label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="targetUrl" class="form-label">Target URL</label>
+            <input type="text" 
+                   name="targetUrl" 
+                   id="targetUrl" 
+                   class="form-control" 
+                   required 
+                   placeholder="Enter target URL"
+                   aria-label="Target URL"
+                   value="https://huseyinsekmenoglu.net/">
+        </div>
         <uui-button
           color="default"
           look="primary"
-          @click="${this.#onClickWhoAmI}"
+          @click="${this.#exportHtml}"
         >
-          Who am I?
+          Export HTML
         </uui-button>
         <p>
           This endpoint gets your current user from the server and displays your
@@ -138,38 +120,6 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
         </p>
       </uui-box>
 
-      <uui-box headline="What's my Name?">
-        <div slot="header">[Server]</div>
-        <h2><uui-icon name="icon-user"></uui-icon> ${this._yourName}</h2>
-        <uui-button
-          color="default"
-          look="primary"
-          @click="${this.#onClickWhatsMyName}"
-        >
-          Whats my name?
-        </uui-button>
-        <p>
-          This endpoint has a forced delay to show the button 'waiting' state
-          for a few seconds before completing the request.
-        </p>
-      </uui-box>
-
-      <uui-box headline="What's the Time?">
-        <div slot="header">[Server]</div>
-        <h2>
-          <uui-icon name="icon-alarm-clock"></uui-icon> ${this._timeFromMrWolf
-            ? this._timeFromMrWolf.toLocaleString()
-            : "Press the button!"}
-        </h2>
-        <uui-button
-          color="default"
-          look="primary"
-          @click="${this.#onClickWhatsTheTimeMrWolf}"
-        >
-          Whats the time Mr Wolf?
-        </uui-button>
-        <p>This endpoint gets the current date and time from the server.</p>
-      </uui-box>
 
       <uui-box headline="Who am I?" class="wide">
         <div slot="header">[Context]</div>
@@ -209,10 +159,10 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
   ];
 }
 
-export default ExampleDashboardElement;
+export default HtmlExporterDashboardElement;
 
 declare global {
   interface HTMLElementTagNameMap {
-    "example-dashboard": ExampleDashboardElement;
+    "html-exporter-dashboard": HtmlExporterDashboardElement;
   }
 }

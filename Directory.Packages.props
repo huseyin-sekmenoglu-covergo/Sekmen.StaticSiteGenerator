@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Clean" Version="6.0.1" />
-    <PackageVersion Include="HtmlAgilityPack" Version="[1.12.0,)" />
+    <PackageVersion Include="HtmlAgilityPack" Version="[1.12.1,)" />
     <PackageVersion Include="Sekmen.StaticSiteGenerator" Version="0.2.0" />
     <PackageVersion Include="Umbraco.Cms" Version="[16.0.0,)"/>
     <PackageVersion Include="Umbraco.Cms.Web.Website" Version="[16.0.0,)"/>
