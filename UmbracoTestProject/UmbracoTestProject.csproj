@@ -9,7 +9,6 @@
     <ItemGroup>
         <PackageReference Include="Clean" />
         <PackageReference Include="Umbraco.Cms" />
-        <PackageReference Include="Umbraco.Community.HtmlExporter" />
     </ItemGroup>
 
     <PropertyGroup>
