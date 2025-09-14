@@ -15,13 +15,17 @@ public class UmbracoCommunityHtmlExporterApiController(
     public async Task<DashboardViewModel[]> GetDomains()
     {
         IEnumerable<IDomain> domains = await domainService.GetAllAsync(true);
-        
+
         UmbracoContextReference umbracoContextReference = umbracoContextFactory.EnsureUmbracoContext();
         documentNavigationQueryService.TryGetRootKeys(out IEnumerable<Guid> rootKeys);
         DashboardViewModel[] viewModel = rootKeys
             .Select(key => umbracoContextReference.UmbracoContext.Content.GetById(key))
             .WhereNotNull()
-            .Select(m => new DashboardViewModel(m.Id, m.Name, domains.First(n => n.RootContentId == m.Id).DomainName))
+            .Select(m => new DashboardViewModel(
+                m.Id,
+                m.Name,
+                domains.FirstOrDefault(n => n.RootContentId == m.Id)?.DomainName ?? "No domain assigned")
+            )
             .ToArray();
 
         return viewModel;

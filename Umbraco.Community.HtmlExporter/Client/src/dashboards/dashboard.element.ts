@@ -2,17 +2,13 @@ import { LitElement, css, html, customElement, state } from "@umbraco-cms/backof
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT } from "@umbraco-cms/backoffice/notification";
-import { UMB_CURRENT_USER_CONTEXT, UmbCurrentUserModel } from "@umbraco-cms/backoffice/current-user";
-import { UmbracoCommunityHtmlExporter } from "../api/index.js";
+import { DashboardViewModel, UmbracoCommunityHtmlExporter } from "../api/index.js";
 
 @customElement("html-exporter-dashboard")
 export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
  
   @state()
-  private _serverUserData?: string;
-
-  @state()
-  private _contextCurrentUser?: UmbCurrentUserModel;
+  private _serverDomainData?: DashboardViewModel[];
 
   #notificationContext?: typeof UMB_NOTIFICATION_CONTEXT.TYPE;
 
@@ -23,18 +19,20 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
       this.#notificationContext = notificationContext;
     });
 
-    this.consumeContext(UMB_CURRENT_USER_CONTEXT, (currentUserContext) => {
-      // When we have the current user context
-      // We can observe properties from it, such as the current user or perhaps just individual properties
-      // When the currentUser object changes we will get notified and can reset the @state properrty
-      this.observe(
-        currentUserContext?.currentUser,
-        (currentUser) => {
-          this._contextCurrentUser = currentUser;
-        },
-        "_contextCurrentUser"
-      );
-    });
+    UmbracoCommunityHtmlExporter.getDomains()
+      .then((response) => {
+        this._serverDomainData = response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+        if (this.#notificationContext)
+          this.#notificationContext.peek("danger",  {
+            data: {
+              headline: `Error fetching data from server`,
+              message: `See console for details`,
+            },
+          });
+      });
   }
 
   #exportHtml = async (ev: Event) => {
@@ -43,10 +41,11 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
 
     const { data, error } = await UmbracoCommunityHtmlExporter.exportWebsite({
       body: {
-        SiteUrl: "https://huseyinsekmenoglu.net/",
-        TargetUrl: "https://huseyinsekmenoglu.net/",
-        OutputFolder: "C:\\Temp\\HtmlExport"
-      } 
+        SiteUrl: (this.shadowRoot?.getElementById("sourceSite") as HTMLInputElement)?.value,
+        OutputFolder: (this.shadowRoot?.getElementById("outputFolder") as HTMLInputElement)?.value,
+        AdditionalUrls: (this.shadowRoot?.getElementById("additionalUrls") as HTMLTextAreaElement)?.value.split('\n').map(url => url.trim()).filter(url => url.length > 0),
+        TargetUrl: (this.shadowRoot?.getElementById("targetUrl") as HTMLInputElement)?.value
+      }
     });
 
     if (error) {
@@ -62,75 +61,70 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
     if (this.#notificationContext) {
       this.#notificationContext.peek("warning", {
         data: {
-          headline: `You are ${this._serverUserData}`,
-          message: `Your email is ${this._serverUserData}`,
+          headline: `You are`,
+          message: `Your email is`,
         },
       });
     }
   };
-  // ${this._serverUserData?.groups.map(
-  //   (group) => html`<li>${group.name}</li>`
-  // )}
 
   render() {
     return html`
-      <uui-box headline="Export HTML" class="wide">
-        <div slot="header">[Server]</div>
-        <h2>
-          <uui-icon name="icon-user"></uui-icon>${this._serverUserData
-            ? this._serverUserData
-            : "Press the button!"}
-        </h2>
-        <div class="form-group mb-3">
-          <label for="siteUrl" class="form-label">Select source site</label> 
-          <ul>
-            <li>
-            <input type="radio" id="site1" name="site" value="site1" checked>
-              <label for="site1">https://huseyinsekmenoglu.net/</label>
-            </li>
-            <li>
-              <input type="radio" id="site2" name="site" value="site2">
-              <label for="site2">https://example.com/</label>
-            </li>
-          </ul>
-        </div>
+      <uui-box headline="Export Settings" class="wide">
+        <uui-form>
+          <uui-form-layout-item>
+            <uui-label for="sourceSite">Select source site</uui-label>
+            <uui-radio-group name="sourceSite" id="sourceSite" required>
+              ${this._serverDomainData?.map(
+                (site) => html`<uui-radio id="${site.url}" name="site" value="${site.name}">
+                    ${site.url}
+                  </uui-radio>`
+              )}
+            </uui-radio-group>
+          </uui-form-layout-item>
 
-        <div class="form-group mb-3">
-          <label for="targetUrl" class="form-label">Target URL</label>
-            <input type="text" 
-                   name="targetUrl" 
-                   id="targetUrl" 
-                   class="form-control" 
-                   required 
-                   placeholder="Enter target URL"
-                   aria-label="Target URL"
-                   value="https://huseyinsekmenoglu.net/">
-        </div>
-        <uui-button
-          color="default"
-          look="primary"
-          @click="${this.#exportHtml}"
-        >
-          Export HTML
-        </uui-button>
-        <p>
-          This endpoint gets your current user from the server and displays your
-          email and list of user groups. It also displays a Notification with
-          your details.
-        </p>
-      </uui-box>
+          <uui-form-layout-item>
+            <uui-label for="outputFolder">Output Folder</uui-label>
+            <uui-input type="text" 
+                  name="outputFolder"
+                  id="outputFolder"
+                  required
+                  placeholder="Enter output folder"
+                  value="C:\\Temp\\HtmlExport"
+            ></uui-input>
+          </uui-form-layout-item>
 
+          <uui-form-layout-item>
+            <uui-label for="additionalUrls">
+              Additional URLs (one per line)
+            </uui-label>
+            <uui-textarea
+              name="additionalUrls"
+              id="additionalUrls"
+              placeholder="Enter additional URLs (one per line)"
+            ></uui-textarea>
+          </uui-form-layout-item>
 
-      <uui-box headline="Who am I?" class="wide">
-        <div slot="header">[Context]</div>
-        <p>Current user email: <b>${this._contextCurrentUser?.email}</b></p>
-        <p>
-          This is the JSON object available by consuming the
-          'UMB_CURRENT_USER_CONTEXT' context:
-        </p>
-        <umb-code-block language="json" copy
-          >${JSON.stringify(this._contextCurrentUser, null, 2)}</umb-code-block
-        >
+          <uui-form-layout-item>
+            <uui-label for="targetUrl">
+              Target URL
+            </uui-label>
+            <uui-input type="text" 
+                  name="targetUrl" 
+                  id="targetUrl" 
+                  required 
+                  placeholder="Enter target URL"
+                  value="https://huseyinsekmenoglu.net/"
+            ></uui-input>
+          </uui-form-layout-item>
+          <uui-button
+            color="default"
+            look="primary"
+            @click="${this.#exportHtml}"
+          >
+            Export HTML
+          </uui-button>
+        </uui-form>
       </uui-box>
     `;
   }
