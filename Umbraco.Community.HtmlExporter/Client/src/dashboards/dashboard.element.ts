@@ -8,7 +8,7 @@ import { DashboardViewModel, UmbracoCommunityHtmlExporter } from "../api/index.j
 export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
  
   @state()
-  private _serverDomainData?: DashboardViewModel[];
+  private _serverDomainData?: DashboardViewModel;
 
   #notificationContext?: typeof UMB_NOTIFICATION_CONTEXT.TYPE;
 
@@ -19,7 +19,7 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
       this.#notificationContext = notificationContext;
     });
 
-    UmbracoCommunityHtmlExporter.getDomains()
+    UmbracoCommunityHtmlExporter.getData()
       .then((response) => {
         this._serverDomainData = response.data;
       })
@@ -75,7 +75,7 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
           <uui-form-layout-item>
             <uui-label for="sourceSite">Select source site</uui-label>
             <uui-radio-group name="sourceSite" id="sourceSite" required>
-              ${this._serverDomainData?.map(
+              ${this._serverDomainData?.domains?.map(
                 (site) => html`<uui-radio id="${site.url}" name="site" value="${site.name}">
                     ${site.url}
                   </uui-radio>`
@@ -90,7 +90,7 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
                   id="outputFolder"
                   required
                   placeholder="Enter output folder"
-                  value="C:\\Temp\\HtmlExport"
+                  value="${this._serverDomainData?.settings?.outputFolder || ''}"
             ></uui-input>
           </uui-form-layout-item>
 
@@ -102,6 +102,8 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
               name="additionalUrls"
               id="additionalUrls"
               placeholder="Enter additional URLs (one per line)"
+              rows="5"
+              value="${this._serverDomainData?.settings?.additionalUrls.join("\n") || ''}"
             ></uui-textarea>
           </uui-form-layout-item>
 
@@ -114,7 +116,7 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
                   id="targetUrl" 
                   required 
                   placeholder="Enter target URL"
-                  value="https://huseyinsekmenoglu.net/"
+                  value="${this._serverDomainData?.settings?.targetUrl || ''}"
             ></uui-input>
           </uui-form-layout-item>
           <uui-button

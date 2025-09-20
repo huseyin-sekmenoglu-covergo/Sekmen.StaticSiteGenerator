@@ -5,7 +5,7 @@ builder.CreateUmbracoBuilder()
     .AddWebsite()
     .AddComposers()
     .Build();
-
+builder.Services.AddHtmlExporter(builder.Configuration);
 WebApplication app = builder.Build();
 
 await app.BootUmbracoAsync();
@@ -17,6 +17,7 @@ RewriteOptions options = new RewriteOptions()
         .AddRewrite(@"^(.+)/page/(\d+)", "$1?page=$2", skipRemainingRules: true);
 app.UseRewriter(options);
 app.UseHttpsRedirection();
+
 
 app.UseUmbraco()
     .WithMiddleware(u =>

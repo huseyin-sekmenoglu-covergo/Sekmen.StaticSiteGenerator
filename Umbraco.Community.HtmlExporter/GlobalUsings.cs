@@ -22,4 +22,5 @@ global using Umbraco.Cms.Core.Web;
 global using Umbraco.Cms.Web.Common.Authorization;
 global using Umbraco.Cms.Web.Common.Routing;
 global using Umbraco.Community.HtmlExporter.Models;
+global using Umbraco.Community.HtmlExporter.Startup;
 global using Umbraco.Extensions;

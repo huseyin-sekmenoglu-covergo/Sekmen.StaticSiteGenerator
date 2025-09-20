@@ -1,11 +1,11 @@
-import { LitElement as v, html as d, css as x, state as b, customElement as E } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin as _ } from "@umbraco-cms/backoffice/element-api";
+import { LitElement as y, html as m, css as _, state as b, customElement as x } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as E } from "@umbraco-cms/backoffice/element-api";
 import { UMB_NOTIFICATION_CONTEXT as U } from "@umbraco-cms/backoffice/notification";
-import { c as p, f as w } from "./client.gen-Cs-igdZt.js";
+import { c as p, f as D } from "./client.gen-Cs-igdZt.js";
 class c {
-  static exportWebsite(t) {
-    return (t?.client ?? p).post({
-      ...w,
+  static exportWebsite(e) {
+    return (e?.client ?? p).post({
+      ...D,
       security: [
         {
           scheme: "bearer",
@@ -13,38 +13,38 @@ class c {
         }
       ],
       url: "/umbraco/umbracocommunityhtmlexporter/api/v1/export-website",
-      ...t,
+      ...e,
       headers: {
         "Content-Type": null,
-        ...t?.headers
+        ...e?.headers
       }
     });
   }
-  static getDomains(t) {
-    return (t?.client ?? p).get({
+  static getData(e) {
+    return (e?.client ?? p).get({
       security: [
         {
           scheme: "bearer",
           type: "http"
         }
       ],
-      url: "/umbraco/umbracocommunityhtmlexporter/api/v1/get-domains",
-      ...t
+      url: "/umbraco/umbracocommunityhtmlexporter/api/v1/get-data",
+      ...e
     });
   }
 }
-var D = Object.defineProperty, C = Object.getOwnPropertyDescriptor, f = (e) => {
-  throw TypeError(e);
-}, g = (e, t, r, i) => {
-  for (var a = i > 1 ? void 0 : i ? C(t, r) : t, s = e.length - 1, n; s >= 0; s--)
-    (n = e[s]) && (a = (i ? n(t, r, a) : n(a)) || a);
-  return i && a && D(t, r, a), a;
-}, y = (e, t, r) => t.has(e) || f("Cannot " + r), u = (e, t, r) => (y(e, t, "read from private field"), t.get(e)), h = (e, t, r) => t.has(e) ? f("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, r), S = (e, t, r, i) => (y(e, t, "write to private field"), t.set(e, r), r), o, m;
-let l = class extends _(v) {
+var w = Object.defineProperty, S = Object.getOwnPropertyDescriptor, f = (t) => {
+  throw TypeError(t);
+}, g = (t, e, r, i) => {
+  for (var a = i > 1 ? void 0 : i ? S(e, r) : e, s = t.length - 1, n; s >= 0; s--)
+    (n = t[s]) && (a = (i ? n(e, r, a) : n(a)) || a);
+  return i && a && w(e, r, a), a;
+}, v = (t, e, r) => e.has(t) || f("Cannot " + r), u = (t, e, r) => (v(t, e, "read from private field"), e.get(t)), h = (t, e, r) => e.has(t) ? f("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, r), C = (t, e, r, i) => (v(t, e, "write to private field"), e.set(t, r), r), o, d;
+let l = class extends E(y) {
   constructor() {
-    super(), h(this, o), h(this, m, async (e) => {
-      const t = e.target;
-      t.state = "waiting";
+    super(), h(this, o), h(this, d, async (t) => {
+      const e = t.target;
+      e.state = "waiting";
       const { data: r, error: i } = await c.exportWebsite({
         body: {
           SiteUrl: this.shadowRoot?.getElementById("sourceSite")?.value,
@@ -55,21 +55,21 @@ let l = class extends _(v) {
         }
       });
       if (i) {
-        t.state = "failed", console.error(i);
+        e.state = "failed", console.error(i);
         return;
       }
-      r !== void 0 && (t.state = "success"), u(this, o) && u(this, o).peek("warning", {
+      r !== void 0 && (e.state = "success"), u(this, o) && u(this, o).peek("warning", {
         data: {
           headline: "You are",
           message: "Your email is"
         }
       });
-    }), this.consumeContext(U, (e) => {
-      S(this, o, e);
-    }), c.getDomains().then((e) => {
-      this._serverDomainData = e.data;
-    }).catch((e) => {
-      console.error(e), u(this, o) && u(this, o).peek("danger", {
+    }), this.consumeContext(U, (t) => {
+      C(this, o, t);
+    }), c.getData().then((t) => {
+      this._serverDomainData = t.data;
+    }).catch((t) => {
+      console.error(t), u(this, o) && u(this, o).peek("danger", {
         data: {
           headline: "Error fetching data from server",
           message: "See console for details"
@@ -78,15 +78,15 @@ let l = class extends _(v) {
     });
   }
   render() {
-    return d`
+    return m`
       <uui-box headline="Export Settings" class="wide">
         <uui-form>
           <uui-form-layout-item>
             <uui-label for="sourceSite">Select source site</uui-label>
             <uui-radio-group name="sourceSite" id="sourceSite" required>
-              ${this._serverDomainData?.map(
-      (e) => d`<uui-radio id="${e.url}" name="site" value="${e.name}">
-                    ${e.url}
+              ${this._serverDomainData?.domains?.map(
+      (t) => m`<uui-radio id="${t.url}" name="site" value="${t.name}">
+                    ${t.url}
                   </uui-radio>`
     )}
             </uui-radio-group>
@@ -99,7 +99,7 @@ let l = class extends _(v) {
                   id="outputFolder"
                   required
                   placeholder="Enter output folder"
-                  value="C:\\Temp\\HtmlExport"
+                  value="${this._serverDomainData?.settings?.outputFolder || ""}"
             ></uui-input>
           </uui-form-layout-item>
 
@@ -111,6 +111,9 @@ let l = class extends _(v) {
               name="additionalUrls"
               id="additionalUrls"
               placeholder="Enter additional URLs (one per line)"
+              rows="5"
+              value="${this._serverDomainData?.settings?.additionalUrls.join(`
+`) || ""}"
             ></uui-textarea>
           </uui-form-layout-item>
 
@@ -123,13 +126,13 @@ let l = class extends _(v) {
                   id="targetUrl" 
                   required 
                   placeholder="Enter target URL"
-                  value="https://huseyinsekmenoglu.net/"
+                  value="${this._serverDomainData?.settings?.targetUrl || ""}"
             ></uui-input>
           </uui-form-layout-item>
           <uui-button
             color="default"
             look="primary"
-            @click="${u(this, m)}"
+            @click="${u(this, d)}"
           >
             Export HTML
           </uui-button>
@@ -139,9 +142,9 @@ let l = class extends _(v) {
   }
 };
 o = /* @__PURE__ */ new WeakMap();
-m = /* @__PURE__ */ new WeakMap();
+d = /* @__PURE__ */ new WeakMap();
 l.styles = [
-  x`
+  _`
       :host {
         display: grid;
         gap: var(--uui-size-layout-1);
@@ -166,11 +169,11 @@ g([
   b()
 ], l.prototype, "_serverDomainData", 2);
 l = g([
-  E("html-exporter-dashboard")
+  x("html-exporter-dashboard")
 ], l);
-const I = l;
+const R = l;
 export {
   l as HtmlExporterDashboardElement,
-  I as default
+  R as default
 };
-//# sourceMappingURL=dashboard.element-D65cl5AS.js.map
+//# sourceMappingURL=dashboard.element-BEuRyk4g.js.map

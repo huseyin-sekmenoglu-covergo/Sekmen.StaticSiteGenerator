@@ -7,28 +7,28 @@ public class UmbracoCommunityHtmlExporterApiController(
     IHttpClientFactory httpClientFactory,
     IUmbracoContextFactory umbracoContextFactory,
     IDocumentNavigationQueryService documentNavigationQueryService,
-    IDomainService domainService
+    IDomainService domainService,
+    IOptions<ExportHtmlSettings> exportHtmlSettings
 ) : UmbracoCommunityHtmlExporterApiControllerBase
 {
-    [HttpGet("get-domains")]
-    [ProducesResponseType<DashboardViewModel[]>(StatusCodes.Status200OK)]
-    public async Task<DashboardViewModel[]> GetDomains()
+    [HttpGet("get-data")]
+    [ProducesResponseType<DashboardViewModel>(StatusCodes.Status200OK)]
+    public async Task<DashboardViewModel> GetData()
     {
         IEnumerable<IDomain> domains = await domainService.GetAllAsync(true);
-
         UmbracoContextReference umbracoContextReference = umbracoContextFactory.EnsureUmbracoContext();
         documentNavigationQueryService.TryGetRootKeys(out IEnumerable<Guid> rootKeys);
-        DashboardViewModel[] viewModel = rootKeys
+        DashboardDomains[] domainsArray = rootKeys
             .Select(key => umbracoContextReference.UmbracoContext.Content.GetById(key))
             .WhereNotNull()
-            .Select(m => new DashboardViewModel(
+            .Select(m => new DashboardDomains(
                 m.Id,
                 m.Name,
                 domains.FirstOrDefault(n => n.RootContentId == m.Id)?.DomainName ?? "No domain assigned")
             )
             .ToArray();
 
-        return viewModel;
+        return new DashboardViewModel(domainsArray, exportHtmlSettings.Value);
     }
 
     [HttpPost("export-website")]
