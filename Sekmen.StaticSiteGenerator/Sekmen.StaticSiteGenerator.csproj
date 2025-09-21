@@ -5,10 +5,42 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Sekmen.StaticSiteGenerator</PackageId>
+        <Product>Sekmen.StaticSiteGenerator</Product>
+        <Title>Sekmen.StaticSiteGenerator</Title>
+        <Authors>Hüseyin Sekmenoğlu</Authors>
+        <PackageProjectUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</RepositoryUrl>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>logo.png</PackageIcon>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>D:\Proton\My files\About Me\Documents\sekmen.dev nuget package signature.snk</AssemblyOriginatorKeyFile>
+        <PublicSign>true</PublicSign>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="HtmlAgilityPack" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\logo.png">
+            <Pack>True</Pack>
+            <PackagePath />
+            <Link>logo.png</Link>
+        </None>
+        <None Include="..\readme.md">
+            <Pack>True</Pack>
+            <PackagePath />
+            <Link>readme.md</Link>
+        </None>
     </ItemGroup>
 
 </Project>

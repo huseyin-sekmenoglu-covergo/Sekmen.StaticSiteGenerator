@@ -39,12 +39,60 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
+    var siteUrl = (this.shadowRoot?.getElementById("sourceSite") as HTMLInputElement)?.value;
+    var outputFolder = (this.shadowRoot?.getElementById("outputFolder") as HTMLInputElement)?.value;
+    var additionalUrls = (this.shadowRoot?.getElementById("additionalUrls") as HTMLTextAreaElement)?.value;
+    var targetUrl = (this.shadowRoot?.getElementById("targetUrl") as HTMLInputElement)?.value;
+    if (!siteUrl) {
+      buttonElement.state = "failed";
+      if (this.#notificationContext) {
+        this.#notificationContext.peek("danger", {
+          data: {
+            headline: `Error`,
+            message: `Please select a valid source site URL`,
+          },
+        });
+      }
+      return;
+    }
+    if (!outputFolder) {
+      buttonElement.state = "failed";
+      if (this.#notificationContext) {
+        this.#notificationContext.peek("danger", {
+          data: {
+            headline: `Error`,
+            message: `Please enter a valid output folder`,
+          },
+        });
+      }
+      return;
+    }
+    if (!targetUrl) {
+      buttonElement.state = "failed";
+      if (this.#notificationContext) {
+        this.#notificationContext.peek("danger", {
+          data: {
+            headline: `Error`,
+            message: `Please enter a valid target URL`,
+          },
+        });
+      }
+      return;
+    }
+
+    if (!targetUrl.endsWith("/")) {
+      targetUrl += "/";
+    }
+    if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
+      targetUrl = "http://" + targetUrl;
+    }
+
     const { data, error } = await UmbracoCommunityHtmlExporter.exportWebsite({
       body: {
-        SiteUrl: (this.shadowRoot?.getElementById("sourceSite") as HTMLInputElement)?.value,
-        OutputFolder: (this.shadowRoot?.getElementById("outputFolder") as HTMLInputElement)?.value,
-        AdditionalUrls: (this.shadowRoot?.getElementById("additionalUrls") as HTMLTextAreaElement)?.value.split('\n').map(url => url.trim()).filter(url => url.length > 0),
-        TargetUrl: (this.shadowRoot?.getElementById("targetUrl") as HTMLInputElement)?.value
+        SiteUrl: siteUrl,
+        OutputFolder: outputFolder,
+        AdditionalUrls: additionalUrls.split('\n').map(url => url.trim()).filter(url => url.length > 0),
+        TargetUrl: targetUrl
       }
     });
 
@@ -59,13 +107,17 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
     }
 
     if (this.#notificationContext) {
-      this.#notificationContext.peek("warning", {
+      this.#notificationContext.peek("positive", {
         data: {
-          headline: `You are`,
-          message: `Your email is`,
+          headline: `Export started`,
+          message: `The HTML export has been started successfully.`,
         },
       });
     }
+
+    setTimeout(() => {
+      buttonElement.state = "success";
+    }, 2000);
   };
 
   render() {
@@ -76,8 +128,8 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
             <uui-label for="sourceSite">Select source site</uui-label>
             <uui-radio-group name="sourceSite" id="sourceSite" required>
               ${this._serverDomainData?.domains?.map(
-                (site) => html`<uui-radio id="${site.url}" name="site" value="${site.name}">
-                    ${site.url}
+                (site) => html`<uui-radio name="site" value="${site.url}">
+                    ${site.name} (${site.url})
                   </uui-radio>`
               )}
             </uui-radio-group>
