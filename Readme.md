@@ -1,6 +1,8 @@
 # Sitemap Website Exporter (.NET)
 
-A simple application that reads `sitemap.xml`, downloads all listed pages, and saves each page's HTML along with its CSS, JavaScript, image, and inline background image resources to a local folder — preserving the original structure.
+A simple application that reads `sitemap.xml`, downloads all listed pages and saves each page's HTML
+along with its CSS, JavaScript, image and inline background image resources to a local folder,
+preserving the original structure.
 
 ---
 
@@ -20,7 +22,7 @@ A simple application that reads `sitemap.xml`, downloads all listed pages, and s
 
 ## 🛠 Technologies
 
-- .NET 6+
+- .NET 9
 - `HttpClient` for HTTP requests
 - `HtmlAgilityPack` for HTML parsing
 - `System.Xml.Linq` for reading `sitemap.xml`
@@ -42,59 +44,43 @@ cd sitemap-exporter
 dotnet build
 ```
 
-### 3. Run the app
+### 3. Add App Settings
+
+```json
+{
+  "ExportHtmlSettings": {
+    "TargetUrl": "https://huseyinsekmenoglu.net/",
+    "OutputFolder": "D:\\Projects",
+    "AdditionalUrls": [
+      "/sitemap.xml",
+      "/thank-you",
+      "/404.html",
+      "/robots.txt",
+      "/humans.txt",
+      "/manifest.json"
+    ]
+  }
+}
+```
+
+### 4. Add Dependency in Program.cs
+
+```csharp
+builder.Services.AddHtmlExporter(builder.Configuration);
+```
+
+### 5. Run the app
 
 ```bash
 dotnet run
 ```
 
-### 4. Test project credentials
+### 6. Test project credentials
 
 ```bash
 admin@test.com
 123qwe123qwe
 ```
-
-By default, it will:
-
-- Load sitemap from `https://example.com/sitemap.xml`
-- Save the downloaded content to the `ExportedSite/` folder
-
-To use your own sitemap and output directory, edit these lines in `Program.cs`:
-
-```csharp
-string sitemapUrl = "https://yourdomain.com/sitemap.xml";
-string outputFolder = "ExportedSite";
-```
-
----
-
-## 📁 Output Structure
-
-The tool saves the website to a folder like this:
-
-```
-ExportedSite/
-└── yourdomain.com/
-    ├── index.html
-    ├── styles/
-    │   └── main.css
-    ├── scripts/
-    │   └── app.js
-    └── media/
-        └── header-bg.jpg
-```
-
----
-
-## ✅ TODO / Improvements
-
-- [ ] Rewrite HTML to point to downloaded assets
-- [ ] Parse `@import` and `url(...)` in CSS files
-- [ ] CLI argument support (`--sitemap`, `--output`)
-- [ ] Parallel downloads
-- [ ] Retry and timeout settings
-- [ ] Save metadata (ETags, hashes) for smarter caching
 
 ---
 
