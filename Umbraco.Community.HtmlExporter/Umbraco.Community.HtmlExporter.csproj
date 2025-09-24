@@ -12,9 +12,9 @@
         <Authors>Hüseyin Sekmenoğlu</Authors>
         <PackageProjectUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</RepositoryUrl>
-        <Version>0.6.0</Version>
-        <AssemblyVersion>0.6.0</AssemblyVersion>
-        <FileVersion>0.6.0</FileVersion>
+        <Version>0.6.1</Version>
+        <AssemblyVersion>0.6.1</AssemblyVersion>
+        <FileVersion>0.6.1</FileVersion>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
@@ -49,7 +49,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Sekmen.StaticSiteGenerator\Sekmen.StaticSiteGenerator.csproj" />
+        <ProjectReference Include="..\Sekmen.StaticSiteGenerator\Sekmen.StaticSiteGenerator.csproj">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+        </ProjectReference>
     </ItemGroup>
     <!-- Fix for dotnet pack not including private (project) references -->
     <PropertyGroup>
@@ -84,18 +88,6 @@
     <ItemGroup>
         <Folder Include="wwwroot\"/>
         <Folder Include="wwwroot\App_Plugins\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\client.gen-Cs-igdZt.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\client.gen-Cs-igdZt.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\dashboard.element-CRqaB5sM.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\dashboard.element-CRqaB5sM.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\entrypoint-ZrgjOO4U.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\entrypoint-ZrgjOO4U.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\umbraco-community-html-exporter.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\umbraco-community-html-exporter.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\UmbracoCommunityHtmlExporter\umbraco-package.json" />
     </ItemGroup>
 
     <!-- Restore and build Client files -->
