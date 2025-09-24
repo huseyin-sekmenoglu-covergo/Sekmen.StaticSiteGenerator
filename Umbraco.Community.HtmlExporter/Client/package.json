@@ -1,7 +1,7 @@
 {
   "name": "umbraco-community-html-exporter",
   "private": true,
-  "version": "0.5.3",
+  "version": "0.6.0",
   "type": "module",
   "scripts": {
     "watch": "tsc && vite build --watch",

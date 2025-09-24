@@ -11,9 +11,9 @@
         <Authors>Hüseyin Sekmenoğlu</Authors>
         <PackageProjectUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</RepositoryUrl>
-        <Version>1.0.0</Version>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
+        <Version>1.1.0</Version>
+        <AssemblyVersion>1.1.0</AssemblyVersion>
+        <FileVersion>1.1.0</FileVersion>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
@@ -32,7 +32,7 @@
             <PackagePath />
             <Link>logo.png</Link>
         </None>
-        <None Include="..\readme.md">
+        <None Include="readme.md">
             <Pack>True</Pack>
             <PackagePath />
             <Link>readme.md</Link>

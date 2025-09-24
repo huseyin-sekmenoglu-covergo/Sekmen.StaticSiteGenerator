@@ -54,7 +54,7 @@ public static class Functions
             htmlDoc.LoadHtml(html);
 
             Uri uri = new Uri(pageUrl);
-            string pagePath = Path.Combine(outputFolder, uri.Host, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar).Replace("umbraco-cms", "umbraco"));
+            string pagePath = Path.Combine(outputFolder, uri.AbsolutePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar).Replace("umbraco-cms", "umbraco"));
             if (!Path.HasExtension(uri.AbsolutePath))
                 pagePath = Path.Combine(pagePath, "index.html");
             if (!Directory.Exists(Path.GetDirectoryName(pagePath)))
@@ -113,7 +113,7 @@ public static class Functions
             if (string.IsNullOrEmpty(style)) 
                 continue;
             // Extract all urls from the style content using regex
-            MatchCollection matches = Regex.Matches(style, @"url\(['""]?(?<url>[^'""\)]+)['""]?\)");
+            MatchCollection matches = Regex.Matches(style, """url\(['"]?(?<url>[^'"\)]+)['"]?\)""");
             foreach (Match match in matches)
             {
                 string url = match.Groups["url"].Value;
@@ -130,7 +130,7 @@ public static class Functions
         try
         {
             Uri resourceUri = new Uri(uri, resourceUrl);
-            string resourcePath = Path.Combine(outputFolder, uri.Host, resourceUri.AbsolutePath.TrimStart('/'));
+            string resourcePath = Path.Combine(outputFolder, resourceUri.AbsolutePath.TrimStart('/'));
             Directory.CreateDirectory(Path.GetDirectoryName(resourcePath)!);
 
             using HttpRequestMessage headRequest = new(HttpMethod.Head, resourceUri);

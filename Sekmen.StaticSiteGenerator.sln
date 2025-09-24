@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco.Community.HtmlExporter", "Umbraco.Community.HtmlExporter\Umbraco.Community.HtmlExporter.csproj", "{6A36A1AD-ED1E-4C0B-915D-4496EA1F614E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinTestApp", "WinTestApp\WinTestApp.csproj", "{DD3102B5-4288-44EE-A195-D0D036014B68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +33,9 @@ Global
 		{6A36A1AD-ED1E-4C0B-915D-4496EA1F614E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A36A1AD-ED1E-4C0B-915D-4496EA1F614E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A36A1AD-ED1E-4C0B-915D-4496EA1F614E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD3102B5-4288-44EE-A195-D0D036014B68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD3102B5-4288-44EE-A195-D0D036014B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD3102B5-4288-44EE-A195-D0D036014B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD3102B5-4288-44EE-A195-D0D036014B68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
