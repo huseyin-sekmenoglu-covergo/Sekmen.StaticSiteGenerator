@@ -1,0 +1,35 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "AuthorDetails": {
+    "Name": "Hüseyin Sekmenoğlu",
+    "Description": "Developer of Umbraco.Community.HtmlExporter.",
+    "Url": "https://sekmen.dev",
+    "ImageUrl": "https://huseyin.sekmen.dev/logo.JPG",
+    "Contributors": [],
+    "SyncContributorsFromRepository": false
+  },
+  "Category": "Developer Tools",
+  "Description": "A package for exporting Umbraco content and media to static HTML files, enabling static site generation and easy deployment.",
+  "DiscussionForumUrl": "https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator",
+  "DocumentationUrl": "https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator",
+  "IssueTrackerUrl": "https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator",
+  "LicenseTypes": [ "Free" ],
+  "PackageType": "Package",
+  "PackagesByAuthor": [],
+  "RelatedPackages": [],
+  "Screenshots": [
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/sekmenhuseyin/Sekmen.StaticSiteGenerator/refs/heads/master/Screenshot.png",
+      "Caption": "Export HTML Dashboard"
+    }
+  ],
+  "Tags": [
+    "static-site",
+    "export",
+    "html",
+    "umbraco",
+    "generator",
+    "content"
+  ],
+  "Title": "Umbraco.Community.HtmlExporter"
+}

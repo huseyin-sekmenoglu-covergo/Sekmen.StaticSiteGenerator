@@ -9,8 +9,10 @@
         <PackageId>Umbraco.Community.HtmlExporter</PackageId>
         <Product>Umbraco.Community.HtmlExporter</Product>
         <Title>Umbraco.Community.HtmlExporter</Title>
+        <Description>Quickly host Umbraco content on cheap / global static hosting providers (GitHub Pages, Netlify, Cloudflare Pages, Azure Static Web Apps, S3 + CloudFront) for speed, cost and resilience, while continuing to author content in Umbraco.</Description>
         <Authors>Hüseyin Sekmenoğlu</Authors>
-        <PackageProjectUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</PackageProjectUrl>
+        <Copyright>Hüseyin Sekmenoğlu @ 2025</Copyright>
+        <PackageProjectUrl>https://marketplace.umbraco.com/package/umbraco.community.htmlexporter</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator</RepositoryUrl>
         <Version>1.0.0</Version>
         <AssemblyVersion>1.0.0</AssemblyVersion>
@@ -18,6 +20,7 @@
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
+        <PackageTags>Umbraco Umbraco-Marketplace HTML Export static web</PackageTags>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>D:\Proton\My files\About Me\Documents\sekmen.dev nuget package signature.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>

@@ -7,7 +7,7 @@ Monorepo containing:
 ![Dashboard Screenshot](Screenshot.png)
 
 ## Why
-Quickly host Umbraco (or any CMS-backed) content on cheap / global static hosting providers (GitHub Pages, Netlify, Cloudflare Pages, Azure Static Web Apps, S3 + CloudFront) for speed, cost, and resilience – while continuing to author content in Umbraco.
+Quickly host Umbraco content on cheap / global static hosting providers (GitHub Pages, Netlify, Cloudflare Pages, Azure Static Web Apps, S3 + CloudFront) for speed, cost and resilience, while continuing to author content in Umbraco.
 
 ---
 ## Packages
