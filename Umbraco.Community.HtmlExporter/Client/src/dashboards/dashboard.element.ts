@@ -99,20 +99,27 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
     if (error) {
       buttonElement.state = "failed";
       console.error(error);
+      if (this.#notificationContext) {
+        this.#notificationContext.peek("danger", {
+          data: {
+            headline: `Export failed`,
+            message: `An error occurred during export. See console for details.`,
+          },
+        });
+      }
       return;
     }
 
     if (data !== undefined) {
       buttonElement.state = "success";
-    }
-
-    if (this.#notificationContext) {
-      this.#notificationContext.peek("positive", {
-        data: {
-          headline: `Export started`,
-          message: `The HTML export has been started successfully.`,
-        },
-      });
+        if (this.#notificationContext) {
+          this.#notificationContext.peek("positive", {
+            data: {
+              headline: `Export finished`,
+              message: `The HTML export has been finished successfully.`,
+            },
+          });
+        }
     }
 
     setTimeout(() => {
@@ -125,10 +132,10 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
       <uui-box headline="Export Settings" class="wide">
         <uui-form>
           <uui-form-layout-item>
-            <uui-label for="sourceSite">Select source site</uui-label>
-            <uui-radio-group name="sourceSite" id="sourceSite" required>
+            <uui-label slot="label" for="sourceSite">Select source site</uui-label>
+            <uui-radio-group name="sourceSite" id="sourceSite" required role="radiogroup">
               ${this._serverDomainData?.domains?.map(
-                (site) => html`<uui-radio name="site" value="${site.url}">
+                (site, index) => html`<uui-radio name="site" value="${site.url}" checked="${index === 0}">
                     ${site.name} (${site.url})
                   </uui-radio>`
               )}
@@ -136,18 +143,19 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
           </uui-form-layout-item>
 
           <uui-form-layout-item>
-            <uui-label for="outputFolder">Output Folder</uui-label>
+            <uui-label slot="label" for="outputFolder">Output Folder</uui-label>
             <uui-input type="text" 
-                  name="outputFolder"
-                  id="outputFolder"
-                  required
-                  placeholder="Enter output folder"
-                  value="${this._serverDomainData?.settings?.outputFolder || ''}"
+              name="outputFolder"
+              id="outputFolder"
+              required
+              class="full-width"
+              placeholder="Enter output folder"
+              value="${this._serverDomainData?.settings?.outputFolder || ''}"
             ></uui-input>
           </uui-form-layout-item>
 
           <uui-form-layout-item>
-            <uui-label for="additionalUrls">
+            <uui-label slot="label" for="additionalUrls">
               Additional URLs (one per line)
             </uui-label>
             <uui-textarea
@@ -160,15 +168,16 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
           </uui-form-layout-item>
 
           <uui-form-layout-item>
-            <uui-label for="targetUrl">
+            <uui-label slot="label" for="targetUrl">
               Target URL
             </uui-label>
             <uui-input type="text" 
-                  name="targetUrl" 
-                  id="targetUrl" 
-                  required 
-                  placeholder="Enter target URL"
-                  value="${this._serverDomainData?.settings?.targetUrl || ''}"
+              name="targetUrl" 
+              id="targetUrl" 
+              required 
+              class="full-width"
+              placeholder="Enter target URL"
+              value="${this._serverDomainData?.settings?.targetUrl || ''}"
             ></uui-input>
           </uui-form-layout-item>
           <uui-button
@@ -194,6 +203,10 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
 
       uui-box {
         margin-bottom: var(--uui-size-layout-1);
+      }
+
+      uui-input.full-width {
+        width: 100%;
       }
 
       h2 {
