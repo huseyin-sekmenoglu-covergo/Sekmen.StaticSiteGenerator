@@ -2,7 +2,8 @@
 
 public class ExportHtmlSettings
 {
-    public string TargetUrl { get; init; }
-    public string OutputFolder { get; init; }
-    public string[] AdditionalUrls { get; set; }
+    public string TargetUrl { get; init; } = string.Empty;
+    public string OutputFolder { get; init; } = string.Empty;
+    public string[] AdditionalUrls { get; init; } = [];
+    public StringReplacements[] StringReplacements { get; init; } = [];
 }

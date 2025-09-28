@@ -23,6 +23,7 @@ export type ExportHtmlSettings = {
     targetUrl: string;
     outputFolder: string;
     additionalUrls: Array<string>;
+    stringReplacements: Array<StringReplacements>;
 };
 
 export type NotificationHeaderModel = {
@@ -31,12 +32,18 @@ export type NotificationHeaderModel = {
     type: EventMessageTypeModel;
 };
 
+export type StringReplacements = {
+    oldValue: string;
+    newValue: string;
+};
+
 export type ExportWebsiteData = {
     body?: {
         SiteUrl?: string;
         AdditionalUrls?: Array<string>;
         TargetUrl?: string;
         OutputFolder?: string;
+        StringReplacements?: Array<StringReplacements>;
     };
     path?: never;
     query?: never;

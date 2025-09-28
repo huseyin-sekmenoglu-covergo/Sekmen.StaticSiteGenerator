@@ -50,6 +50,7 @@ partial class Form1
         button1.TabIndex = 0;
         button1.Text = "Export";
         button1.UseVisualStyleBackColor = false;
+        button1.Click += button1_Click;
         // 
         // textBox1
         // 

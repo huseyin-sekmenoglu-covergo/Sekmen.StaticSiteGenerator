@@ -10,7 +10,7 @@ const t = [
     name: "Umbraco Community Html Exporter Dashboard",
     alias: "Umbraco.Community.HtmlExporter.Dashboard",
     type: "dashboard",
-    js: () => import("./dashboard.element-CF4gMJSR.js"),
+    js: () => import("./dashboard.element-DdLGqyku.js"),
     meta: {
       label: "HTML Exporter",
       pathname: "html-exporter-dashboard"

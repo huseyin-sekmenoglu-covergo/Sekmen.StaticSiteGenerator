@@ -1,11 +1,11 @@
-import { LitElement as x, html as h, css as E, state as _, customElement as U } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin as w } from "@umbraco-cms/backoffice/element-api";
-import { UMB_NOTIFICATION_CONTEXT as D } from "@umbraco-cms/backoffice/notification";
-import { c, f as S } from "./client.gen-Cs-igdZt.js";
-class f {
+import { LitElement as D, html as f, css as R, state as S, customElement as $ } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as V } from "@umbraco-cms/backoffice/element-api";
+import { UMB_NOTIFICATION_CONTEXT as T } from "@umbraco-cms/backoffice/notification";
+import { c as g, f as C } from "./client.gen-Cs-igdZt.js";
+class v {
   static exportWebsite(e) {
-    return (e?.client ?? c).post({
-      ...S,
+    return (e?.client ?? g).post({
+      ...C,
       security: [
         {
           scheme: "bearer",
@@ -21,7 +21,7 @@ class f {
     });
   }
   static getData(e) {
-    return (e?.client ?? c).get({
+    return (e?.client ?? g).get({
       security: [
         {
           scheme: "bearer",
@@ -33,21 +33,21 @@ class f {
     });
   }
 }
-var T = Object.defineProperty, C = Object.getOwnPropertyDescriptor, v = (t) => {
+var F = Object.defineProperty, O = Object.getOwnPropertyDescriptor, b = (t) => {
   throw TypeError(t);
-}, y = (t, e, a, s) => {
-  for (var l = s > 1 ? void 0 : s ? C(e, a) : e, o = t.length - 1, u; o >= 0; o--)
-    (u = t[o]) && (l = (s ? u(e, a, l) : u(l)) || l);
-  return s && l && T(e, a, l), l;
-}, b = (t, e, a) => e.has(t) || v("Cannot " + a), i = (t, e, a) => (b(t, e, "read from private field"), e.get(t)), g = (t, e, a) => e.has(t) ? v("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, a), R = (t, e, a, s) => (b(t, e, "write to private field"), e.set(t, a), a), r, p;
-let n = class extends w(x) {
+}, x = (t, e, r, u) => {
+  for (var s = u > 1 ? void 0 : u ? O(e, r) : e, o = t.length - 1, n; o >= 0; o--)
+    (n = t[o]) && (s = (u ? n(e, r, s) : n(s)) || s);
+  return u && s && F(e, r, s), s;
+}, E = (t, e, r) => e.has(t) || b("Cannot " + r), l = (t, e, r) => (E(t, e, "read from private field"), e.get(t)), y = (t, e, r) => e.has(t) ? b("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, r), L = (t, e, r, u) => (E(t, e, "write to private field"), e.set(t, r), r), a, c;
+let d = class extends V(D) {
   constructor() {
-    super(), g(this, r), g(this, p, async (t) => {
+    super(), y(this, a), y(this, c, async (t) => {
       const e = t.target;
       e.state = "waiting";
-      var a = this.shadowRoot?.getElementById("sourceSite")?.value, s = this.shadowRoot?.getElementById("outputFolder")?.value, l = this.shadowRoot?.getElementById("additionalUrls")?.value, o = this.shadowRoot?.getElementById("targetUrl")?.value;
-      if (!a) {
-        e.state = "failed", i(this, r) && i(this, r).peek("danger", {
+      var r = this.shadowRoot?.getElementById("sourceSite")?.value, u = this.shadowRoot?.getElementById("outputFolder")?.value, s = this.shadowRoot?.getElementById("additionalUrls")?.value, o = this.shadowRoot?.getElementById("targetUrl")?.value, n = this.shadowRoot?.getElementById("stringReplacements")?.value;
+      if (!r) {
+        e.state = "failed", l(this, a) && l(this, a).peek("danger", {
           data: {
             headline: "Error",
             message: "Please select a valid source site URL"
@@ -55,8 +55,8 @@ let n = class extends w(x) {
         });
         return;
       }
-      if (!s) {
-        e.state = "failed", i(this, r) && i(this, r).peek("danger", {
+      if (!u) {
+        e.state = "failed", l(this, a) && l(this, a).peek("danger", {
           data: {
             headline: "Error",
             message: "Please enter a valid output folder"
@@ -65,7 +65,7 @@ let n = class extends w(x) {
         return;
       }
       if (!o) {
-        e.state = "failed", i(this, r) && i(this, r).peek("danger", {
+        e.state = "failed", l(this, a) && l(this, a).peek("danger", {
           data: {
             headline: "Error",
             message: "Please enter a valid target URL"
@@ -74,17 +74,25 @@ let n = class extends w(x) {
         return;
       }
       o.endsWith("/") || (o += "/"), !o.startsWith("http://") && !o.startsWith("https://") && (o = "http://" + o);
-      const { data: u, error: m } = await f.exportWebsite({
-        body: {
-          SiteUrl: a,
-          OutputFolder: s,
-          AdditionalUrls: l.split(`
-`).map((d) => d.trim()).filter((d) => d.length > 0),
-          TargetUrl: o
-        }
+      const w = n.split(`
+`).map((i) => i.trim()).filter((i) => i.length > 0 && i.includes("|")).map((i) => {
+        const [m, U] = i.split("|", 2);
+        return { oldValue: m.trim(), newValue: U?.trim() || "" };
+      }), p = {
+        SiteUrl: r,
+        OutputFolder: u,
+        TargetUrl: o,
+        AdditionalUrls: s.split(`
+`).map((i) => i.trim()).filter((i) => i.length > 0)
+      };
+      w.forEach((i, m) => {
+        p[`StringReplacements[${m}].OldValue`] = i.oldValue, p[`StringReplacements[${m}].NewValue`] = i.newValue;
       });
-      if (m) {
-        e.state = "failed", console.error(m), i(this, r) && i(this, r).peek("danger", {
+      const { data: _, error: h } = await v.exportWebsite({
+        body: p
+      });
+      if (h) {
+        e.state = "failed", console.error(h), l(this, a) && l(this, a).peek("danger", {
           data: {
             headline: "Export failed",
             message: "An error occurred during export. See console for details."
@@ -92,7 +100,7 @@ let n = class extends w(x) {
         });
         return;
       }
-      u !== void 0 && (e.state = "success", i(this, r) && i(this, r).peek("positive", {
+      _ !== void 0 && (e.state = "success", l(this, a) && l(this, a).peek("positive", {
         data: {
           headline: "Export finished",
           message: "The HTML export has been finished successfully."
@@ -100,12 +108,12 @@ let n = class extends w(x) {
       })), setTimeout(() => {
         e.state = "success";
       }, 2e3);
-    }), this.consumeContext(D, (t) => {
-      R(this, r, t);
-    }), f.getData().then((t) => {
+    }), this.consumeContext(T, (t) => {
+      L(this, a, t);
+    }), v.getData().then((t) => {
       this._serverDomainData = t.data;
     }).catch((t) => {
-      console.error(t), i(this, r) && i(this, r).peek("danger", {
+      console.error(t), l(this, a) && l(this, a).peek("danger", {
         data: {
           headline: "Error fetching data from server",
           message: "See console for details"
@@ -114,14 +122,14 @@ let n = class extends w(x) {
     });
   }
   render() {
-    return h`
+    return f`
       <uui-box headline="Export Settings" class="wide">
         <uui-form>
           <uui-form-layout-item>
             <uui-label slot="label" for="sourceSite">Select source site</uui-label>
             <uui-radio-group name="sourceSite" id="sourceSite" required role="radiogroup">
               ${this._serverDomainData?.domains?.map(
-      (t, e) => h`<uui-radio name="site" value="${t.url}" checked="${e === 0}">
+      (t, e) => f`<uui-radio name="site" value="${t.url}" checked="${e === 0}">
                     ${t.name} (${t.url})
                   </uui-radio>`
     )}
@@ -167,10 +175,24 @@ let n = class extends w(x) {
               value="${this._serverDomainData?.settings?.targetUrl || ""}"
             ></uui-input>
           </uui-form-layout-item>
+
+          <uui-form-layout-item>
+            <uui-label slot="label" for="stringReplacements">
+              String Replacements (Format: oldValue|newValue, one per line)
+            </uui-label>
+            <uui-textarea
+              name="stringReplacements"
+              id="stringReplacements"
+              placeholder="Enter string replacements (format: oldValue|newValue, one per line)"
+              rows="5"
+              value="${this._serverDomainData?.settings?.stringReplacements?.map((t) => `${t.oldValue}|${t.newValue}`).join(`
+`) || ""}"
+            ></uui-textarea>
+          </uui-form-layout-item>
           <uui-button
             color="default"
             look="primary"
-            @click="${i(this, p)}"
+            @click="${l(this, c)}"
           >
             Export HTML
           </uui-button>
@@ -179,10 +201,10 @@ let n = class extends w(x) {
     `;
   }
 };
-r = /* @__PURE__ */ new WeakMap();
-p = /* @__PURE__ */ new WeakMap();
-n.styles = [
-  E`
+a = /* @__PURE__ */ new WeakMap();
+c = /* @__PURE__ */ new WeakMap();
+d.styles = [
+  R`
       :host {
         display: grid;
         gap: var(--uui-size-layout-1);
@@ -207,15 +229,15 @@ n.styles = [
       }
     `
 ];
-y([
-  _()
-], n.prototype, "_serverDomainData", 2);
-n = y([
-  U("html-exporter-dashboard")
-], n);
-const k = n;
+x([
+  S()
+], d.prototype, "_serverDomainData", 2);
+d = x([
+  $("html-exporter-dashboard")
+], d);
+const P = d;
 export {
-  n as HtmlExporterDashboardElement,
-  k as default
+  d as HtmlExporterDashboardElement,
+  P as default
 };
-//# sourceMappingURL=dashboard.element-CF4gMJSR.js.map
+//# sourceMappingURL=dashboard.element-DdLGqyku.js.map

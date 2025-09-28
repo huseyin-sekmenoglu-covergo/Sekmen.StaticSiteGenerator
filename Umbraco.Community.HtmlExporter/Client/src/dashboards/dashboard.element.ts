@@ -43,6 +43,7 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
     var outputFolder = (this.shadowRoot?.getElementById("outputFolder") as HTMLInputElement)?.value;
     var additionalUrls = (this.shadowRoot?.getElementById("additionalUrls") as HTMLTextAreaElement)?.value;
     var targetUrl = (this.shadowRoot?.getElementById("targetUrl") as HTMLInputElement)?.value;
+    var stringReplacementsText = (this.shadowRoot?.getElementById("stringReplacements") as HTMLTextAreaElement)?.value;
     if (!siteUrl) {
       buttonElement.state = "failed";
       if (this.#notificationContext) {
@@ -87,13 +88,32 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
       targetUrl = "http://" + targetUrl;
     }
 
+    // Process string replacements
+    const stringReplacements = stringReplacementsText
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0 && line.includes('|'))
+      .map(line => {
+        const [oldValue, newValue] = line.split('|', 2);
+        return { oldValue: oldValue.trim(), newValue: newValue?.trim() || '' };
+      });
+
+    // Create properly formatted form data for ASP.NET Core model binding
+    const requestBody: any = {
+      SiteUrl: siteUrl,
+      OutputFolder: outputFolder,
+      TargetUrl: targetUrl,
+      AdditionalUrls: additionalUrls.split('\n').map(url => url.trim()).filter(url => url.length > 0)
+    };
+
+    // Add string replacements with proper indexing for ASP.NET Core
+    stringReplacements.forEach((replacement, index) => {
+      requestBody[`StringReplacements[${index}].OldValue`] = replacement.oldValue;
+      requestBody[`StringReplacements[${index}].NewValue`] = replacement.newValue;
+    });
+
     const { data, error } = await UmbracoCommunityHtmlExporter.exportWebsite({
-      body: {
-        SiteUrl: siteUrl,
-        OutputFolder: outputFolder,
-        AdditionalUrls: additionalUrls.split('\n').map(url => url.trim()).filter(url => url.length > 0),
-        TargetUrl: targetUrl
-      }
+      body: requestBody
     });
 
     if (error) {
@@ -179,6 +199,19 @@ export class HtmlExporterDashboardElement extends UmbElementMixin(LitElement) {
               placeholder="Enter target URL"
               value="${this._serverDomainData?.settings?.targetUrl || ''}"
             ></uui-input>
+          </uui-form-layout-item>
+
+          <uui-form-layout-item>
+            <uui-label slot="label" for="stringReplacements">
+              String Replacements (Format: oldValue|newValue, one per line)
+            </uui-label>
+            <uui-textarea
+              name="stringReplacements"
+              id="stringReplacements"
+              placeholder="Enter string replacements (format: oldValue|newValue, one per line)"
+              rows="5"
+              value="${this._serverDomainData?.settings?.stringReplacements?.map((sr: any) => `${sr.oldValue}|${sr.newValue}`).join('\n') || ''}"
+            ></uui-textarea>
           </uui-form-layout-item>
           <uui-button
             color="default"
