@@ -1,6 +1,5 @@
-# Sekmen.StaticSiteGenerator & Umbraco.Community.HtmlExporter
+# Umbraco.Community.HtmlExporter
 
-Monorepo containing:
 - `Sekmen.StaticSiteGenerator` – Core engine that crawls a dynamic Umbraco / HTML site and exports a static snapshot.
 - `Umbraco.Community.HtmlExporter` – Umbraco backoffice dashboard + API that wraps the core engine so editors can trigger exports.
 
@@ -54,15 +53,38 @@ After installing `Umbraco.Community.HtmlExporter` into your Umbraco project:
 
 ---
 ## Installation
-### Core
-```
-dotnet add package Sekmen.StaticSiteGenerator
-```
-### Plugin (in an Umbraco project)
+### Nuget
 ```
 dotnet add package Umbraco.Community.HtmlExporter
 ```
-Build the project; MSBuild targets will auto restore & build the embedded client assets (via NPM in `Client`).
+### Startup
+```
+builder.Services.AddHtmlExporter(builder.Configuration);
+```
+### AppSettings.json
+```
+  "ExportHtmlSettings": {
+    "TargetUrl": "https://huseyinsekmenoglu.net/",
+    "OutputFolder": "D:\\Projects\\ExportedWebsite",
+    "AdditionalUrls": [
+      "/sitemap.xml",
+      "/404.html",
+      "/robots.txt",
+      "/humans.txt",
+      "/manifest.json"
+    ],
+    "StringReplacements": [
+      {
+        "OldValue": "umbraco-cms",
+        "NewValue": "umbraco"
+      },
+      {
+          "OldValue": "Umbraco CMS",
+          "NewValue": "Umbraco"
+      }
+    ]
+  }
+```
 
 ---
 ## Configuration Notes
@@ -80,33 +102,6 @@ Ensure `TargetUrl` ends with a trailing slash for clean concatenation.
 - Does not render JS / SPA routes
 
 Roadmap ideas tracked inside the core package README.
-
----
-## Local Development
-1. Clone repo & restore
-```
-git clone https://github.com/sekmenhuseyin/Sekmen.StaticSiteGenerator.git
-cd Sekmen.StaticSiteGenerator
- dotnet restore
-```
-2. Build all
-```
-dotnet build
-```
-3. (Optional) Manually build plugin client
-```
-cd Umbraco.Community.HtmlExporter/Client
-npm install
-npm run build
-```
-4. Launch `UmbracoTestProject` to experiment.
-
----
-## Packaging
-```
-dotnet pack -c Release
-```
-Produces `.nupkg` files for both packages with embedded README + icon.
 
 ---
 ## Contributing
